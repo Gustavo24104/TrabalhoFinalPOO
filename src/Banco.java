@@ -1,5 +1,5 @@
 public class Banco {
     public static void main(String[] args) {
-        System.out.println("aaaaaaaaaaaaaaaaaa");
+        Cliente c = new Cliente("111.444.777-35");
     }
 }
