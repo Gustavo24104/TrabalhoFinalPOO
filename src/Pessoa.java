@@ -24,7 +24,6 @@ public abstract class Pessoa {
 
         if(digito1 != Integer.parseInt(String.valueOf(cpf.charAt(12)))) return false;
         if(digito2 != Integer.parseInt(String.valueOf(cpf.charAt(13)))) return false;
-
         return true;
     }
 }
