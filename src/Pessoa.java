@@ -1,9 +1,10 @@
+import java.io.Serializable;
 import java.util.Calendar;
 
-public abstract class Pessoa {
-    protected String nome, cpf, escolaridade, estadoCivil;
+public abstract class Pessoa implements Serializable {
+    private String nome, cpf, escolaridade, estadoCivil;
     Calendar dataNascimento;
-    protected Endereco end;
+    private Endereco end;
 
     public boolean ValidaCPF () {
         int multiplicador = 10;
@@ -25,5 +26,74 @@ public abstract class Pessoa {
         if(digito1 != Integer.parseInt(String.valueOf(cpf.charAt(12)))) return false;
         if(digito2 != Integer.parseInt(String.valueOf(cpf.charAt(13)))) return false;
         return true;
+    }
+
+    
+    public Pessoa(String nome, String cpf, String escolaridade,
+                  String estadoCivil, Calendar dataNascimento, Endereco end) throws CPFInvalidoException{
+        this.nome = nome;
+        this.cpf = cpf;
+        if (!ValidaCPF()) {
+            throw new CPFInvalidoException("CPF Invalido informado!\n");
+        }
+        this.escolaridade = escolaridade;
+        this.estadoCivil = estadoCivil;
+        this.dataNascimento = dataNascimento;
+        this.end = end;
+    }
+
+    public Pessoa() {
+
+    }
+
+//Getters and Setters
+
+
+    public String getNome() {
+        return nome;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getEscolaridade() {
+        return escolaridade;
+    }
+
+    public void setEscolaridade(String escolaridade) {
+        this.escolaridade = escolaridade;
+    }
+
+    public String getEstadoCivil() {
+        return estadoCivil;
+    }
+
+    public void setEstadoCivil(String estadoCivil) {
+        this.estadoCivil = estadoCivil;
+    }
+
+    public Calendar getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(Calendar dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public Endereco getEnd() {
+        return end;
+    }
+
+    public void setEnd(Endereco end) {
+        this.end = end;
     }
 }
