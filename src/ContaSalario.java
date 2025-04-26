@@ -23,4 +23,12 @@ public class ContaSalario extends Conta {
         }
         setSaldoAtual(getSaldoAtual() - valor);
     }
+
+    public void MostraInfos() {
+        super.MostraInfos();
+        System.out.println("Tipo: Conta salário");
+        System.out.println("Limite de saque" + limSaque);
+        System.out.println("Limite de transferencia" + limTransferencia);
+    }
+
 }

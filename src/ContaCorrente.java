@@ -29,4 +29,11 @@ public class ContaCorrente extends Conta{
         setSaldoAtual(getSaldoAtual() + valor - valorTaxaAdm);
     }
 
+    public void MostraInfos() {
+        super.MostraInfos();
+        System.out.println("Tipo de conta: Corrente");
+        System.out.println("Limite cheque especial: " + limChequeEspecial);
+        System.out.println("Taxa administrativa: " + valorTaxaAdm);
+    }
+
 }

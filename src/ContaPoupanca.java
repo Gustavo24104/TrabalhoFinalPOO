@@ -19,4 +19,11 @@ public class ContaPoupanca extends Conta {
         }
         setSaldoAtual(getSaldoAtual() - valor);
     }
+
+    public void MostraInfos() {
+        super.MostraInfos();
+        System.out.println("Tipo de conta: Poupança");
+        System.out.println("Rendimento mensal: " + rendimentoMes);
+    }
+
 }

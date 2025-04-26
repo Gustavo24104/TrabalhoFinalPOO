@@ -1,6 +1,8 @@
+import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Scanner;
 
-public abstract class Conta implements Logavel { //Essa eh a outra classse requisitada como abstrata pela questao 5
+public abstract class Conta implements Logavel, Serializable { //Essa eh a outra classse requisitada como abstrata pela questao 5
     private String nroConta, senha;
     private double saldoAtual;
     private Calendar dataAbertura, ultimaMovimentacao;
@@ -8,6 +10,7 @@ public abstract class Conta implements Logavel { //Essa eh a outra classse requi
     private Cliente[] donoDaConta;
     private Agencia ag;
     private int tentativasErradas;
+    private boolean logado = false;
 
     public Conta(String nroConta, String senha, double saldoAtual, Calendar dataAbertura,
                  Calendar ultimaMovimentacao, boolean estaAtiva, Cliente donoDaConta1, Agencia ag) {
@@ -25,17 +28,43 @@ public abstract class Conta implements Logavel { //Essa eh a outra classse requi
         this.tentativasErradas = 0;
     }
 
+    public Conta(String nroConta, String senha, Calendar dataAbertura, Cliente donoDaConta1, Agencia ag) {
+        this.nroConta = nroConta;
+        this.senha = senha;
+        this.dataAbertura = dataAbertura;
+        this.donoDaConta = new Cliente[2];
+        this.donoDaConta[0] = donoDaConta1;
+        this.donoDaConta[1] = null;
+        this.ag = ag;
+    }
+
+    public Conta(String nroConta, String senha, Calendar dataAbertura, Cliente donoDaConta1, Cliente donoDaConta2,
+                 Agencia ag) {
+        this.nroConta = nroConta;
+        this.senha = senha;
+        this.dataAbertura = dataAbertura;
+        this.donoDaConta = new Cliente[2];
+        this.donoDaConta[0] = donoDaConta1;
+        this.donoDaConta[1] = donoDaConta2;
+        this.ag = ag;
+    }
+
+
     public void ValidaSenha(String senha) throws SenhaInvalidaException {
-        if(!this.senha.equals(senha)) {
+        if (!this.senha.equals(senha)) {
             tentativasErradas++;
-            if(tentativasErradas == 3) estaBloqueada = false;
-            throw new SenhaInvalidaException("Senha da conta invalida!");
+            if (tentativasErradas == 3) {
+                System.out.println("3 tentativas de login erradas seguidas, conta foi bloqueada!");
+                estaBloqueada = true;
+            }
+            throw new SenhaInvalidaException("Senha da conta invalida! mais " + (3 - tentativasErradas) +
+                    " tentativas restantes até o bloqueio da conta");
         }
         tentativasErradas = 0;
     }
 
     public void Deposito(double valor) throws ValorInvalidoException {
-        if(valor <= 0) {
+        if (valor <= 0) {
             throw new ValorInvalidoException("Depósito não pode ser menor que 0!");
         }
         saldoAtual += valor;
@@ -47,12 +76,87 @@ public abstract class Conta implements Logavel { //Essa eh a outra classse requi
 
     public abstract void Saque(double valor);
 
+    public void Login(String usuario, String senha) {
+        if(estaBloqueada) {
+            System.out.println("Conta bloqueada! Por favor desbloqueie antes de tentar logar.");
+            return;
+        }
+        try {
+            ValidaSenha(senha);
+            if(usuario.equals(this.nroConta)) {
+                logado = true;
+                Menu();
+            }
+        }
+        catch (Exception e) {
+            System.out.println("Senha incorreta!");
+        }
+    }
+
+    public void DesbloquarConta(String senha) {
+
+        try {
+            ValidaSenha(senha);
+            this.estaBloqueada = false;
+            System.out.println("Conta desbloqueada!");
+        } catch (Exception e) {
+            System.out.println("Senha incorreta!");
+        }
+    }
+
+    public void Menu() {
+        if (!logado) {
+            System.out.println("Usuario nao logado!");
+            return;
+        }
+
+        System.out.println("Bem vindo.");
+        MostraInfos();
+        int escolha = 0;
+        Scanner sc = new Scanner(System.in);
+
+        while (escolha != -1) {
+            escolha = sc.nextInt();
+            System.out.println("""
+                    Faça sua escolha:
+                    1 - Sacar dinheiro
+                    2 - Depositar dinheiro
+                    3 - Transferencia bancária
+                    -1 Sair""");
+            switch (escolha) {
+                case 1: {
+                    //Transacao(valor);
+                }
+                case 2: {
+                    //Transacao(valor);
+                }
+                case 3: {
+                    //Transacao();
+                }
+                case -1: {
+                    break;
+                }
+                default: {
+                    System.out.println("Opção inválida!");
+                    continue;
+                }
+            }
+    }
+        logado = false;
+}
+
+    public void MostraInfos(){
+        System.out.println("Numero da conta: " + nroConta);
+        System.out.println("Status " + (estaAtiva ? "ativa" : "inativa"));
+        System.out.println("Saldo atual: " + saldoAtual);
+        System.out.println("Ultima movimentacao em: " + ultimaMovimentacao.get(Calendar.DAY_OF_MONTH)
+        + "/" + ultimaMovimentacao.get(Calendar.MONTH) + "/" +  ultimaMovimentacao.get(Calendar.YEAR));
+    }
+
+
     //Getters and Setters
     public boolean isEstaBloqueada() {
         return estaBloqueada;
-    }
-    public void setEstaBloqueada(boolean estaBloqueada) {
-        this.estaBloqueada = estaBloqueada;
     }
 
     public String getNroConta() {
@@ -110,17 +214,6 @@ public abstract class Conta implements Logavel { //Essa eh a outra classse requi
 
     public void setTentativasErradas(int tentativasErradas) {
         this.tentativasErradas = tentativasErradas;
-    }
-
-    public boolean Login(String usuario, String senha) {
-        try {
-            ValidaSenha(senha);
-            if(usuario.equals(this.nroConta)) return true;
-        }
-        catch (Exception e) {
-            return false;
-        }
-        return false;
     }
 
 }
