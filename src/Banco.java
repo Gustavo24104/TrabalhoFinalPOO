@@ -1,5 +1,4 @@
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Scanner;
@@ -25,7 +24,8 @@ public class Banco {
 
 
     public static void main(String[] args) {
-        //MenuLogin();
+        CarregarDados();
+        MenuLogin();
         clientes = new ArrayList<>();
         Cliente c1 = new Cliente("Teste", "113.336.716-01");
         Cliente c2 = new Cliente("remover", "113.336.716-01");
@@ -33,7 +33,6 @@ public class Banco {
         clientes.add(c2);
 
 
-        CarregarDados();
 
         for(Cliente c : clientes) {
             System.out.println(c.getNome());
@@ -86,21 +85,21 @@ public class Banco {
         ObjectOutputStream os = null;
 
         try {
-            fs = new FileOutputStream("clientes");
+            fs = new FileOutputStream("clientes.sav");
             os = new ObjectOutputStream(fs);
             os.writeObject(clientes);
 
             fs.close();
             os.close();
 
-            fs = new FileOutputStream("agencias");
+            fs = new FileOutputStream("agencias.sav");
             os = new ObjectOutputStream(fs);
             os.writeObject(agencias);
 
             fs.close();
             os.close();
 
-            fs = new FileOutputStream("funcionarios");
+            fs = new FileOutputStream("funcionarios.sav");
             os = new ObjectOutputStream(fs);
             os.writeObject(funcionarios);
 
@@ -108,7 +107,7 @@ public class Banco {
             os.close();
 
 
-            fs = new FileOutputStream("gerentes");
+            fs = new FileOutputStream("gerentes.sav");
             os = new ObjectOutputStream(fs);
             os.writeObject(gerentes);
 
@@ -133,25 +132,25 @@ public class Banco {
         ObjectInputStream os = null;
 
         try {
-            fs = new FileInputStream("clientes");
+            fs = new FileInputStream("clientes.sav");
             os = new ObjectInputStream(fs);
             clientes = (ArrayList<Cliente>) os.readObject();
             fs.close();
             os.close();
 
-            fs = new FileInputStream("agencias");
+            fs = new FileInputStream("agencias.sav");
             os = new ObjectInputStream(fs);
             agencias = (ArrayList<Agencia>) os.readObject();
             fs.close();
             os.close();
 
-            fs = new FileInputStream("funcionarios");
+            fs = new FileInputStream("funcionarios.sav");
             os = new ObjectInputStream(fs);
             funcionarios = (ArrayList<Funcionario>) os.readObject();
             fs.close();
             os.close();
 
-            fs = new FileInputStream("gerentes");
+            fs = new FileInputStream("gerentes.sav");
             os = new ObjectInputStream(fs);
             gerentes = (ArrayList<Gerente>) os.readObject();
             fs.close();
@@ -161,7 +160,7 @@ public class Banco {
             System.out.println("Arquivo de salvamento nao encontrado!" + e.getMessage());
         }
         catch (Exception e) {
-            System.out.println("Algo deu errado!" + e.getMessage());
+            System.out.println("Algo deu errado! " + e.getMessage());
         }
         finally {
             try {
