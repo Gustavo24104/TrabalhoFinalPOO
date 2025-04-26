@@ -15,19 +15,8 @@ public class Cliente extends Pessoa implements Logavel {
     public Cliente(String nome, String cpf, String escolaridade,
                    String estadoCivil, Calendar dataNascimento, Endereco end) {
         super(nome, cpf, escolaridade, estadoCivil, dataNascimento, end);
+    }
 
-    }
-    
-    public Cliente(Cliente c) {
-        this.setEnd(c.getEnd());
-        this.dataNascimento = c.dataNascimento;
-        this.setEstadoCivil(c.getEstadoCivil());
-        this.setEscolaridade(c.getEscolaridade());
-        this.setNome(c.getNome());
-        this.setCpf(c.getCpf());
-        this.contas = new ArrayList<>();
-        this.contas.addAll(c.contas);
-    }
 
 
 
@@ -40,8 +29,8 @@ public class Cliente extends Pessoa implements Logavel {
         return contas;
     }
 
-    public void setContas(ArrayList<Conta> contas) {
-        this.contas = contas;
+    public void NovaConta(Conta c) {
+        contas.add(c);
     }
 
     public void ValidaSenha(String senha) throws SenhaInvalidaException {

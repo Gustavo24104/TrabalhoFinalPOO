@@ -19,15 +19,6 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
         CalcularSalario(salarioBase);
     }
 
-    public Funcionario(Funcionario f) {
-        this.sexo = f.sexo;
-        this.carteiraTrabalho = f.carteiraTrabalho;
-        this.RG = f.RG;
-        this.cargo = f.cargo;
-        this.salario = f.salario;
-        this.anoDeIngresso = f.anoDeIngresso;
-        this.senha = f.senha;
-    }
 
 
 

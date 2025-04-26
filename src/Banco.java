@@ -1,3 +1,4 @@
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,11 +25,25 @@ public class Banco {
 
 
     public static void main(String[] args) {
-        MenuLogin();
+        //MenuLogin();
+        clientes = new ArrayList<>();
+        Cliente c1 = new Cliente("Teste", "113.336.716-01");
+        Cliente c2 = new Cliente("remover", "113.336.716-01");
+        clientes.add(c1);
+        clientes.add(c2);
+
+
+        CarregarDados();
+
+        for(Cliente c : clientes) {
+            System.out.println(c.getNome());
+        }
+
+        //SalvarESair();
     }
 
 
-    //TODO: Acho que vale a pena trocar isso tudo pra busca binária
+    //TODO: Talvez valha a pena trocar isso tudo pra busca binária
     public static Cliente AchaCliente(String nome) {
         for(Cliente c : clientes) {
             if(c.getNome().equals(nome)) return c;
@@ -67,14 +82,96 @@ public class Banco {
 
 
     public static void SalvarESair() {
-        //TODO: Implementar função!
-        //So sai percorrendo todas as arrays que tem aqui e salva eles em arquivo, eh tudo serializable.
+        FileOutputStream fs = null;
+        ObjectOutputStream os = null;
+
+        try {
+            fs = new FileOutputStream("clientes");
+            os = new ObjectOutputStream(fs);
+            os.writeObject(clientes);
+
+            fs.close();
+            os.close();
+
+            fs = new FileOutputStream("agencias");
+            os = new ObjectOutputStream(fs);
+            os.writeObject(agencias);
+
+            fs.close();
+            os.close();
+
+            fs = new FileOutputStream("funcionarios");
+            os = new ObjectOutputStream(fs);
+            os.writeObject(funcionarios);
+
+            fs.close();
+            os.close();
+
+
+            fs = new FileOutputStream("gerentes");
+            os = new ObjectOutputStream(fs);
+            os.writeObject(gerentes);
+
+            fs.close();
+            os.close();
+        }
+        catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            try {
+                if (fs != null) fs.close();
+                if (os != null) os.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
+
 
     public static void CarregarDados() {
-        //TODO: Implementar função!
-    }
+        FileInputStream fs = null;
+        ObjectInputStream os = null;
 
+        try {
+            fs = new FileInputStream("clientes");
+            os = new ObjectInputStream(fs);
+            clientes = (ArrayList<Cliente>) os.readObject();
+            fs.close();
+            os.close();
+
+            fs = new FileInputStream("agencias");
+            os = new ObjectInputStream(fs);
+            agencias = (ArrayList<Agencia>) os.readObject();
+            fs.close();
+            os.close();
+
+            fs = new FileInputStream("funcionarios");
+            os = new ObjectInputStream(fs);
+            funcionarios = (ArrayList<Funcionario>) os.readObject();
+            fs.close();
+            os.close();
+
+            fs = new FileInputStream("gerentes");
+            os = new ObjectInputStream(fs);
+            gerentes = (ArrayList<Gerente>) os.readObject();
+            fs.close();
+            os.close();
+        }
+        catch (FileNotFoundException e) {
+            System.out.println("Arquivo de salvamento nao encontrado!" + e.getMessage());
+        }
+        catch (Exception e) {
+            System.out.println("Algo deu errado!" + e.getMessage());
+        }
+        finally {
+            try {
+                if(os!= null) os.close();
+                if(fs != null) fs.close();
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
 
 
 

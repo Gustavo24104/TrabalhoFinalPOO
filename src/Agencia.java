@@ -16,12 +16,12 @@ public class Agencia implements Serializable {
         this.gerente = gerente;
         this.funcs = new ArrayList<Funcionario>();
         for(Funcionario f : funcs) {
-            this.funcs.add(new Funcionario(f));
+            this.funcs.add(f);
         }
     }
 
     public void CadastraFuncionario(Funcionario f) {
-        funcs.add(new Funcionario(f));
+        funcs.add(f);
     }
 
     public void DemiteFuncionario(Funcionario f){
@@ -29,7 +29,7 @@ public class Agencia implements Serializable {
     }
 
     public void CadastraCliente(Cliente c) {
-        clientes.add(new Cliente(c));
+        clientes.add(c);
     }
 
 //Getters and Setters
