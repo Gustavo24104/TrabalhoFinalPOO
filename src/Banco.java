@@ -24,28 +24,29 @@ public class Banco {
 
 
     public static void main(String[] args) {
-        CarregarDados();
-        MenuLogin();
+        //Inicialização
         clientes = new ArrayList<>();
-        Cliente c1 = new Cliente("Teste", "113.336.716-01");
-        Cliente c2 = new Cliente("remover", "113.336.716-01");
-        clientes.add(c1);
-        clientes.add(c2);
+        agencias = new ArrayList<>();
+        funcionarios = new ArrayList<>();
+        gerentes = new ArrayList<>();
+        CarregarDados();
+        //MenuLogin();
+//        Cliente c1 = new Cliente("Teste", "113.336.716-01", "senha123");
+//        Cliente c2 = new Cliente("remover", "113.336.716-01", "senhaSegura");
+//        clientes.add(c1);
+//        clientes.add(c2);
 
 
 
-        for(Cliente c : clientes) {
-            System.out.println(c.getNome());
-        }
 
-        //SalvarESair();
+        SalvarESair();
     }
 
 
     //TODO: Talvez valha a pena trocar isso tudo pra busca binária
     public static Cliente AchaCliente(String nome) {
         for(Cliente c : clientes) {
-            if(c.getNome().equals(nome)) return c;
+            if(c.getNome().equalsIgnoreCase(nome)) return c;
         }
         return null;
     }
@@ -53,28 +54,28 @@ public class Banco {
 
     public static Funcionario AchaFuncionario(String nome) {
         for(Funcionario f : funcionarios) {
-            if(f.getNome().equals(nome)) return f;
+            if(f.getNome().equalsIgnoreCase(nome)) return f;
         }
         return null;
     }
 
     public static Gerente AchaGerente(String nome) {
         for(Gerente g : gerentes) {
-            if(g.getNome().equals(nome)) return g;
+            if(g.getNome().equalsIgnoreCase(nome)) return g;
         }
         return null;
     }
 
     public static Conta AchaConta(String nro, Cliente dono) {
         for(Conta c : dono.getContas()) {
-            if(c.getNroConta().equals(nro)) return c;
+            if(c.getNroConta().equalsIgnoreCase(nro)) return c; //teoricamente nao era pra ter diferença de maisculo ne
         }
         return null;
     }
 
     public static Agencia AchaAgencia(String nome) {
         for(Agencia a : agencias) {
-            if(a.getNomeFicticio().equals(nome)) return a;
+            if(a.getNomeFicticio().equalsIgnoreCase(nome)) return a;
         }
         return null;
     }
@@ -197,26 +198,21 @@ public class Banco {
                                 "(-1) Voltar");
                         escFunc = scan.nextInt();
                         switch (escFunc){
-                            default: {
-                                System.out.println("Inválido! Tente novamente!");
-                                continue;
-                            }
-
                             case 1: {
                                 while (!verificador){
                                     System.out.println("Digite seu nome e sua senha:");
                                     nome = scan.nextLine();
-                                    senha = scan.nextLine();
                                     l = AchaGerente(nome);
                                     if(l == null) {
-                                        System.out.println("Nao encontrado!");
+                                        System.out.println("Usuario " + nome + "Nao encontrado!");
                                         continue;
                                     }
+                                    senha = scan.nextLine();
                                     verificador = l.Login(nome, senha);
                                     if (verificador) {
                                         MenuGerente((Gerente) l);
                                     }
-                                    else System.out.println("Nome e/ou senha incorretos! Tente novamente!");
+                                    else System.out.println("Senha incorreta! Tente novamente!");
                                 }
                                 continue;
                             }
@@ -228,14 +224,14 @@ public class Banco {
                                     senha = scan.nextLine();
                                     l  = AchaFuncionario(nome);
                                     if(l == null) {
-                                        System.out.println("Nao encontrado!");
+                                        System.out.println("Usuario " + nome + "Nao encontrado!");
                                         continue;
                                     }
                                     verificador = l.Login(nome, senha);
                                     if (verificador) {
                                         MenuFuncionario((Funcionario) l);
                                     }
-                                    else System.out.println("Nome e/ou senha incorretos! Tente novamente!");
+                                    else System.out.println("Senha incorreta! Tente novamente!");
                                 }
                                 continue;
                             }
@@ -243,6 +239,10 @@ public class Banco {
                             case -1: {
                                 System.out.println("Retornando ao menu anterior...");
                                 break; //TODO: ??
+                            }
+                            default: {
+                                System.out.println("Inválido! Tente novamente!");
+                                continue;
                             }
                         }
                     }
@@ -255,14 +255,14 @@ public class Banco {
                         senha = scan.nextLine();
                         l = AchaCliente(nome);
                         if(l == null) {
-                            System.out.println("Nao encontrado!");
+                            System.out.println("Usuario " + nome + " nao encontrado!");
                             continue;
                         }
                         verificador = l.Login(nome, senha);
                         if (verificador) {
                             MenuCliente((Cliente) l);
                         }
-                        else System.out.println("Nome e/ou senha incorretos! Tente novamente!");
+                        else System.out.println("Senha incorreta! Tente novamente!");
                     }
                     continue;
 
@@ -302,7 +302,7 @@ public class Banco {
     }
 
     public static void MenuCliente(Cliente logado) {
-
+        System.out.println("loguei!\n");
     }
 
 }

@@ -6,15 +6,22 @@ public class Cliente extends Pessoa implements Logavel {
     private ArrayList<Conta> contas;
     private String senha;
 
-    public Cliente(String nome, String cpf) throws CPFInvalidoException {
+    public Cliente(String nome, String cpf, String senha) throws CPFInvalidoException {
         this.setNome(nome);
         this.setCpf(cpf);
+        this.senha = senha;
         if(!ValidaCPF()) throw new CPFInvalidoException("CPF invalido!"); //tratar
     }
 
     public Cliente(String nome, String cpf, String escolaridade,
                    String estadoCivil, Calendar dataNascimento, Endereco end) {
         super(nome, cpf, escolaridade, estadoCivil, dataNascimento, end);
+    }
+
+
+    //TODO: Remove isso aqui!
+    public String getSenha() {
+        return senha;
     }
 
 
