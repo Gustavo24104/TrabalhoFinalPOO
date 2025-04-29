@@ -1,8 +1,9 @@
-public class Endereco {
-    private String cidade, estado, bairro;
-    private int cep;
+import java.io.Serializable;
 
-    public Endereco(String cidade, String estado, String bairro, int cep){
+public class Endereco implements Serializable {
+    private String cidade, estado, bairro, cep;
+
+    public Endereco(String cidade, String estado, String bairro, String cep){
         this.cidade = cidade;
         this.estado = estado;
         this.bairro = bairro;
@@ -11,6 +12,6 @@ public class Endereco {
 
 
     public String toString() {
-        return cidade + estado + bairro;
+        return cep + "," + cidade + "," + estado + "," + bairro;
     }
 }

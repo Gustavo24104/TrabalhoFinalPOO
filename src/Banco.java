@@ -10,13 +10,58 @@ public class Banco {
 
     //TODO: Terminar menus (funcionário, gerente, conta e de agencias (tudo o que falta está marcado)
     //TODO: Tratar os problemas de buffer
-    //TODO: Testar tudo direitinho (mas acredito que esteeja funcionando)
+    //TODO: Testar tudo direitinho (mas acredito que esteja funcionando)
     //TODO: Polir mais o código (organizar métodos e remover get/set/construtores que não estão sendo utilizados)
 
     public static void main(String[] args) {
         agencias = new TreeMap<>();
+        Agencia ag = new Agencia("Teste", "123456");
+        agencias.put(ag.getNroAgencia(), ag);
         Menu();
     }
+
+
+    public static Endereco CriarEndereco() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Cep?");
+        String cep = sc.nextLine();
+        sc.next();
+
+        System.out.println("Cidade?");
+        String cidade = sc.nextLine();
+        sc.next();
+
+        System.out.println("Estado?");
+        String estado = sc.nextLine();
+        sc.next();
+
+        System.out.println("Bairro?");
+        String bairro = sc.nextLine();
+        sc.next();
+
+        return new Endereco(cidade, estado, bairro, cep);
+    }
+
+    public static Calendar CriarData() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Dia (número): ");
+        int dia = sc.nextInt();
+        sc.next();
+
+        System.out.println("Mês (número): ");
+        int mes = sc.nextInt();
+        sc.next();
+
+        System.out.println("Ano (número): ");
+        int ano = sc.nextInt();
+        sc.next();
+
+        return new Calendar.Builder().
+                setFields(Calendar.YEAR, ano, Calendar.MONTH, mes, Calendar.DAY_OF_MONTH, dia).build();
+    }
+
 
 
     public static void Menu() {
@@ -31,6 +76,7 @@ public class Banco {
                 4 - Remover agencia
                 -1 Salvar e sair""");
             escolha = sc.nextInt();
+            sc.nextLine(); //limpar buffer
             switch(escolha) {
                 case 1: {
                     for (Agencia ag : agencias.values()) {
@@ -51,6 +97,27 @@ public class Banco {
                 }
                 case 3: {
                     //TODO: Implementar! (lembrar de nao permitir agencias com mesmo numero)
+                    System.out.println("Nome ficticio da agencia?");
+                    String nome = sc.nextLine();
+                    sc.next();
+                    while (true) {
+                        System.out.println("Numero da agencia? (6 digitos)");
+                        String nro = sc.nextLine();
+                        if(nro.length() != 6) {
+                            System.out.println("Número de digitos incorreto!");
+                            continue;
+                        }
+                        if(agencias.containsKey(nro)) {
+                            System.out.println("Ja existe uma agência com esse número! Utilize outro");
+                            continue;
+                        }
+                        break;
+                    }
+                    System.out.println("Cadastre o endereço");
+                    Endereco end = CriarEndereco();
+
+                    System.out.println("Cadastro do gerente:");
+
                 }
                 case 4: {
                     System.out.println("Digite nro da agência que deseja remover");

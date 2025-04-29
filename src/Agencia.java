@@ -3,22 +3,26 @@ import java.util.*;
 
 public class Agencia implements Serializable {
     private String nomeFicticio;
-    private String nroAgencia;
+    private String nroAgencia; //6 digitos
     private Endereco end;
     private Gerente gerente;
     private TreeMap<String, Funcionario> funcs; // mapeia funcionario e cpf
     private TreeMap<String, Cliente> clientes; //maepia clientes e cpf
 
-    public Agencia(String nomeFicticio, String nroAgencia, Endereco end, Gerente gerente, ArrayList<Funcionario> funcs){
+    public Agencia(String nomeFicticio, String nroAgencia, Endereco end){
         this.nomeFicticio = nomeFicticio;
         this.nroAgencia = nroAgencia;
         this.end = end;
-        this.gerente = gerente;
         this.funcs = new TreeMap<>();
         clientes = new TreeMap<>();
-        for(Funcionario f : funcs) {
-            this.funcs.put(f.getCpf(), f);
-        }
+//        for(Funcionario f : funcs) {
+//            this.funcs.put(f.getCpf(), f);
+//        }
+    }
+
+    public Agencia(String nomeFicticio, String nroAgencia) {
+        this.nroAgencia = nroAgencia;
+        this.nomeFicticio = nomeFicticio;
     }
 
     public void CadastraFuncionario(Funcionario f) {
@@ -48,12 +52,14 @@ public class Agencia implements Serializable {
         Logavel l = null;
         int escolha = 0;
         String user = "";
+        System.out.println("Agência logada: " + nomeFicticio);
         while(escolha != -1) {
-            System.out.println("Faça sua selecao\n" +
-                    "1 - Logar como funcionario" +
-                    "2 - Logar como gerente" +
-                    "3 - Logar como cliente" +
-                    "-1 - Sair");
+            System.out.println("""
+                    Faça sua seleção
+                    1 - Logar como funcionario
+                    2 - Logar como gerente
+                    3 - Logar como cliente
+                    -1 - Sair""");
             escolha = sc.nextInt();
             switch (escolha) {
                 case 1: {
@@ -119,9 +125,9 @@ public class Agencia implements Serializable {
     }
 
     public String toString() {
-        return "Nome: " + nomeFicticio + ". Número: " + nroAgencia +
-                "\nEndereço: " + end +
-                "\nGerente: " + gerente.getNome();
+        return "Nome: " + nomeFicticio + ". Número: " + nroAgencia; //+
+//                "\nEndereço: " + end +
+//                "\nGerente: " + gerente.getNome();
     }
 
 

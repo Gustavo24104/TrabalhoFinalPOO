@@ -7,11 +7,11 @@ public class Gerente extends Funcionario {
     private Agencia gerenciada;
     private boolean temCurso;
 
-    public Gerente(double salarioBase, String RG, String cargo, String carteiraTrabalho,String sexo,
+    public Gerente(double salarioBase, String RG, String carteiraTrabalho, String sexo,
                    Calendar anoDeIngresso, Calendar dataDeIngressoComoGerente, Agencia gerenciada, boolean temCurso,
                    String name, String CPF, String scolarship, String civil, Calendar data, Endereco address,
                    String senha) {
-        super(salarioBase, RG, cargo, carteiraTrabalho, sexo, anoDeIngresso, name, CPF,
+        super(salarioBase, RG, "Gerente", carteiraTrabalho, sexo, anoDeIngresso, name, CPF,
                 scolarship, civil, data, address, senha, gerenciada);
         this.dataDeIngressoComoGerente = dataDeIngressoComoGerente;
         this.gerenciada = gerenciada;

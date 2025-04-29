@@ -22,10 +22,8 @@ public class Cliente extends Pessoa implements Logavel {
         this.ag = ag;
     }
 
-
-    //TODO: Remove isso aqui!
-    public String getSenha() {
-        return senha;
+    public Cliente() {
+        contas = new HashMap<>();
     }
 
     //métodos
