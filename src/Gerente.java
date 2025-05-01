@@ -22,25 +22,27 @@ public class Gerente extends Funcionario {
 
     }
 
-    public Gerente(Funcionario f, boolean temCurso) {
+    public Gerente(Funcionario f) {
         super(f);
-        this.temCurso = temCurso;
     }
 
 
 
-    public void LerDoTeclado(Agencia ag) {
-        super.LerDoTeclado(ag);
+    public void LerDoTeclado(boolean mudarData) {
+        //super.LerDoTeclado(ag);
         Scanner sc = new Scanner(System.in);
-        System.out.println("Digite data de ingresso como gerente: ");
-        dataDeIngressoComoGerente = Banco.CriarData();
+        if(mudarData) {
+            System.out.println("Digite data de ingresso como gerente: ");
+            dataDeIngressoComoGerente = Banco.CriarData();
+        }
+        else dataDeIngressoComoGerente = Calendar.getInstance();
         while (true) {
             System.out.println("O gerente tem curso? (true/false)");
             String aux = sc.nextLine(); //sc.nextBoolean nao funciona, não sei porquê.
             if (aux.equalsIgnoreCase("false")) temCurso = false;
-            if (aux.equalsIgnoreCase("true")) temCurso = true;
+            else if (aux.equalsIgnoreCase("true")) temCurso = true;
             else {
-                System.out.println("Valor inválido!");
+                //System.out.println("Valor inválido!");
                 continue;
             }
             break;
@@ -60,7 +62,7 @@ public class Gerente extends Funcionario {
         }
         int escolha = 0;
         Scanner sc = new Scanner(System.in);
-        System.out.println("Olá, " + getNome() + "!");
+        System.out.println("Olá, gerente " + getNome() + "!");
         while(escolha != -1) {
             System.out.println("""
                     Faça sua seleção:
@@ -70,8 +72,10 @@ public class Gerente extends Funcionario {
                     4 - Trocar cargo de funcionário
                     5 - Promover funcionário a gerente
                     6 - Acessar como funcionário (gerenciamento de contas)
+                    7 - Ver dados de um funcionário
                     -1 - Voltar""");
             escolha = sc.nextInt();
+            sc.nextLine(); // limpar buffer
             switch (escolha) {
                 case 1: {
                     Funcionario novo = new Funcionario();
@@ -110,6 +114,7 @@ public class Gerente extends Funcionario {
                     System.out.println("Digite novo cargo: ");
                     f.setCargo(sc.nextLine());
                     System.out.println("Cargo mudado!");
+                    continue;
                 }
                 case 5: {
                     while (true) {
@@ -122,18 +127,35 @@ public class Gerente extends Funcionario {
                             Funcionario novoGerente = getTrabalho().EncontraFuncionario(chave);
                             if(novoGerente == null) {
                                 System.out.println("Funcionário nao encontrado!");
+                                continue;
                             }
-
+                            Gerente g = new Gerente(novoGerente);
+                            g.LerDoTeclado(false);
+                            System.out.println("Feito! funcionário " + g.getNome() + " é o novo gerente.");
+                            getTrabalho().setGerente(g);
+                            System.out.println("É necessário logar novamente! Retornando ao menu anterior");
+                            return;
                         }
                         else {
                             System.out.println("Valor inválido!");
                             continue;
                         }
-                        break;
                     }
+                    continue;
                 }
                 case 6: {
                     super.Menu();
+                }
+                case 7: {
+                    System.out.println("Digite cpf do funcionário: ");
+                    String chave = sc.nextLine();
+                    Funcionario escolhido = getTrabalho().EncontraFuncionario(chave);
+                    if(escolhido == null) {
+                        System.out.println("funcionário nao encontrado");
+                        continue;
+                    }
+                    System.out.println(escolhido);
+                    continue;
                 }
                 case -1: {
                     break;
@@ -157,10 +179,10 @@ public class Gerente extends Funcionario {
     }
 
     public String toString() {
-        return super.toString() + "Gerente{" +
-                "dataDeIngressoComoGerente=" + dataDeIngressoComoGerente +
-                ", temCurso=" + temCurso +
-                '}';
+        return super.toString() + "\nTornou-se gerente em: " + dataDeIngressoComoGerente.get(Calendar.DAY_OF_MONTH) +
+                "/" + dataDeIngressoComoGerente.get(Calendar.MONTH) + "/" +
+                dataDeIngressoComoGerente.get(Calendar.YEAR) +
+                "\ntemCurso=" + temCurso;
     }
 
 }

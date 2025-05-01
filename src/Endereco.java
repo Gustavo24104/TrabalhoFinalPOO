@@ -12,6 +12,6 @@ public class Endereco implements Serializable {
 
 
     public String toString() {
-        return cep + "," + cidade + "," + estado + "," + bairro;
+        return cep + ", " + cidade + ", " + estado + ", " + bairro;
     }
 }

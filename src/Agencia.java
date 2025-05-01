@@ -70,6 +70,7 @@ public class Agencia implements Serializable {
                     1 - Logar como funcionario
                     2 - Logar como gerente
                     3 - Logar como cliente
+                    4 - Ver informações do gerente
                     -1 - Voltar""");
             escolha = sc.nextInt();
             sc.nextLine(); //limpar buffer
@@ -102,6 +103,11 @@ public class Agencia implements Serializable {
                         continue;
                     }
                     break;
+                }
+
+                if(escolha == 4) {
+                    System.out.println(gerente);
+                    continue;
                 }
 
                 if(escolha == -1) {

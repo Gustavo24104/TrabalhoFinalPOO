@@ -100,17 +100,20 @@ public abstract class Pessoa implements Serializable,  PodeSerLidoDoTeclado {
     public Pessoa(Pessoa p) {
         this.nome = p.nome;
         this.dataNascimento = p.dataNascimento;
+        this.estadoCivil = p.estadoCivil;
+        this.escolaridade = p.escolaridade;
+        this.cpf = p.cpf;
+        this.end = p.end;
     }
 
     public String toString() {
-        return "Pessoa{" +
-                "nome='" + nome + '\'' +
-                ", cpf='" + cpf + '\'' +
-                ", escolaridade='" + escolaridade + '\'' +
-                ", estadoCivil='" + estadoCivil + '\'' +
-                ", dataNascimento=" + dataNascimento +
-                ", end=" + end +
-                '}';
+        return "\nome: " + nome +
+                "\ncpf: " + cpf +
+                "\nescolaridade: " + escolaridade +
+                "\nestadoCivil: " + estadoCivil +
+                "\ndataNascimento: " + dataNascimento.get(Calendar.DAY_OF_MONTH) + "/" +
+                dataNascimento.get(Calendar.MONTH) + "/" + dataNascimento.get(Calendar.YEAR) +
+                "\nend: " + end;
     }
 
 

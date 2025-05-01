@@ -32,6 +32,7 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
     }
 
     public Funcionario(Funcionario f) {
+        super(f);
         this.anoDeIngresso = f.anoDeIngresso;
         this.dataNascimento = f.dataNascimento;
         this.senha = f.senha;
@@ -94,6 +95,7 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
             return;
         }
         Scanner sc = new Scanner(System.in);
+        System.out.println("Olá, funcionário " + getNome() + "!");
         int escolha = 0;
         Conta gerenciada = null;
         while(escolha != -1) {
@@ -157,7 +159,7 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                     Faça sua seleção
                     1 - Alterar limite de cheque especial
                     2 - Alterar limite de saque
-                    3 - Deixar conta inativa
+                    3 - Deixar conta ativa/inativa
                     -1 - Voltar""");
             escolha = sc.nextInt();
             switch (escolha) {
@@ -198,17 +200,14 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
 
     @Override
     public String toString() {
-        return super.toString() + "Funcionario{" +
-                "sexo='" + sexo + '\'' +
-                ", carteiraTrabalho='" + carteiraTrabalho + '\'' +
-                ", RG='" + RG + '\'' +
-                ", cargo='" + cargo + '\'' +
-                ", salario=" + salario +
-                ", anoDeIngresso=" + anoDeIngresso +
-                ", senha='" + senha + '\'' +
-                ", ag=" + trabalho +
-                ", logado=" + logado +
-                '}';
+         return super.toString() +
+                "\nsexo: " + sexo +
+                "\ncarteiraTrabalho: " + carteiraTrabalho +
+                "\nRG: " + RG +
+                "\ncargo: " + cargo +
+                "\nsalario: " + salario +
+                "\nFuncionário desde: " + anoDeIngresso.get(Calendar.DAY_OF_MONTH) + "/"
+                 + anoDeIngresso.get(Calendar.MONTH) + "/" + anoDeIngresso.get(Calendar.YEAR);
     }
 
     //4,734e+11 <- 15 anos em milisegundos

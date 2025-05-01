@@ -125,10 +125,12 @@ public class Banco {
                     agencias.put(nro, nova);
 
                     System.out.println("Cadastre o gerente: ");
-                    Gerente g = new Gerente();
-                    g.LerDoTeclado(nova); //TODO: Mudar isso aqui
+                    Funcionario f = new Funcionario();
+                    f.LerDoTeclado(nova);
+                    nova.CadastraFuncionario(f); //o gerente também eh funcionário
+                    Gerente g = new Gerente(f);
+                    g.LerDoTeclado(true);
                     nova.setGerente(g);
-                    nova.CadastraFuncionario(g); //o gerente também eh funcionário
                     continue;
                 }
                 case 4: {
@@ -144,6 +146,7 @@ public class Banco {
                         continue;
                     }
                     System.out.println("Agencia de número " + nro + " removida com sucesso!");
+                    continue;
                 }
                 case -1: {
                     SalvarDados();
