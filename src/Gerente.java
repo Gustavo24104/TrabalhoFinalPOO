@@ -4,7 +4,6 @@ import java.util.Scanner;
 public class Gerente extends Funcionario {
     private static double comissao;
     private Calendar dataDeIngressoComoGerente;
-    private Agencia gerenciada;
     private boolean temCurso;
 
     public Gerente(double salarioBase, String RG, String carteiraTrabalho, String sexo,
@@ -14,14 +13,42 @@ public class Gerente extends Funcionario {
         super(salarioBase, RG, "Gerente", carteiraTrabalho, sexo, anoDeIngresso, name, CPF,
                 scolarship, civil, data, address, senha, gerenciada);
         this.dataDeIngressoComoGerente = dataDeIngressoComoGerente;
-        this.gerenciada = gerenciada;
         this.temCurso = temCurso;
         CalcularSalario(salarioBase);
     }
 
+    //Construtor vazio
+    public Gerente() {
 
-    protected void CalcularSalario(double sal) {
-        CalcularSalario(sal);
+    }
+
+    public Gerente(Funcionario f, boolean temCurso) {
+        super(f);
+        this.temCurso = temCurso;
+    }
+
+
+
+    public void LerDoTeclado(Agencia ag) {
+        super.LerDoTeclado(ag);
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Digite data de ingresso como gerente: ");
+        dataDeIngressoComoGerente = Banco.CriarData();
+        while (true) {
+            System.out.println("O gerente tem curso? (true/false)");
+            String aux = sc.nextLine(); //sc.nextBoolean nao funciona, não sei porquê.
+            if (aux.equalsIgnoreCase("false")) temCurso = false;
+            if (aux.equalsIgnoreCase("true")) temCurso = true;
+            else {
+                System.out.println("Valor inválido!");
+                continue;
+            }
+            break;
+        }
+    }
+
+    public void CalcularSalario(double sal) {
+        super.CalcularSalario(sal);
         setSalario(getSalario() + comissao);
     }
 
@@ -33,25 +60,79 @@ public class Gerente extends Funcionario {
         }
         int escolha = 0;
         Scanner sc = new Scanner(System.in);
+        System.out.println("Olá, " + getNome() + "!");
         while(escolha != -1) {
-            System.out.println("Faça sua seleção:\n" +
-                    "1 - Demitir funcionário\n" +
-                    "2 - Contratar funcionário\n" +
-                    "3 - Trocar salário de funcionário\n" +
-                    "4 - Menu de funcionário (gerenciamento de contas)\n" +
-                    "-1 - Voltar");
+            System.out.println("""
+                    Faça sua seleção:
+                    1 - Contratar funcionário
+                    2 - Demitir funcionário
+                    3 - Trocar salário de funcionário
+                    4 - Trocar cargo de funcionário
+                    5 - Promover funcionário a gerente
+                    6 - Acessar como funcionário (gerenciamento de contas)
+                    -1 - Voltar""");
             escolha = sc.nextInt();
             switch (escolha) {
                 case 1: {
-                    //TODO
+                    Funcionario novo = new Funcionario();
+                    novo.LerDoTeclado(getTrabalho());
+                    getTrabalho().CadastraFuncionario(novo);
+                    continue;
                 }
                 case 2: {
-                    //todo
+                    System.out.println("Digite cpf do funcionário a ser demitido: ");
+                    String key = sc.nextLine();
+                    //Talvez colocar uma confirmação aqui
+                    getTrabalho().DemiteFuncionario(key);
+                    continue;
                 }
                 case 3: {
-                    //todo
+                    System.out.println("Digite cpf do funcionário: ");
+                    String key = sc.nextLine();
+                    Funcionario f = getTrabalho().EncontraFuncionario(key);
+                    if(f == null) {
+                        System.out.println("Funcionário de cpf " + key + " não encontrado!");
+                        continue;
+                    }
+                    System.out.println("Digite novo salário base do funcionário: ");
+                    double novoSal = sc.nextDouble();
+                    f.CalcularSalario(novoSal);
+                    continue;
                 }
                 case 4: {
+                    System.out.println("Digite cpf do funcionário: ");
+                    String key = sc.nextLine();
+                    Funcionario f = getTrabalho().EncontraFuncionario(key);
+                    if(f == null) {
+                        System.out.println("Funcionário de cpf " + key + " não encontrado!");
+                        continue;
+                    }
+                    System.out.println("Digite novo cargo: ");
+                    f.setCargo(sc.nextLine());
+                    System.out.println("Cargo mudado!");
+                }
+                case 5: {
+                    while (true) {
+                        System.out.println("Você tem certeza? Você deixará de ser o gerente dessa agência (true/false)");
+                        String aux = sc.nextLine();
+                        if (aux.equalsIgnoreCase("false")) break;
+                        if (aux.equalsIgnoreCase("true")) {
+                            System.out.println("Digite cpf do funcionário");
+                            String chave = sc.nextLine();
+                            Funcionario novoGerente = getTrabalho().EncontraFuncionario(chave);
+                            if(novoGerente == null) {
+                                System.out.println("Funcionário nao encontrado!");
+                            }
+
+                        }
+                        else {
+                            System.out.println("Valor inválido!");
+                            continue;
+                        }
+                        break;
+                    }
+                }
+                case 6: {
                     super.Menu();
                 }
                 case -1: {
@@ -73,6 +154,13 @@ public class Gerente extends Funcionario {
 
     public static void setComissao(double comissao) {
         Gerente.comissao = comissao;
+    }
+
+    public String toString() {
+        return super.toString() + "Gerente{" +
+                "dataDeIngressoComoGerente=" + dataDeIngressoComoGerente +
+                ", temCurso=" + temCurso +
+                '}';
     }
 
 }

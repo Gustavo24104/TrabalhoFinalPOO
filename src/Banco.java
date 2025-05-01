@@ -15,8 +15,7 @@ public class Banco {
 
     public static void main(String[] args) {
         agencias = new TreeMap<>();
-        Agencia ag = new Agencia("Teste", "123456");
-        agencias.put(ag.getNroAgencia(), ag);
+        CarregarDados();
         Menu();
     }
 
@@ -26,19 +25,19 @@ public class Banco {
 
         System.out.println("Cep?");
         String cep = sc.nextLine();
-        sc.next();
+//        sc.next();
 
         System.out.println("Cidade?");
         String cidade = sc.nextLine();
-        sc.next();
+//        sc.next();
 
         System.out.println("Estado?");
         String estado = sc.nextLine();
-        sc.next();
+//        sc.next();
 
         System.out.println("Bairro?");
         String bairro = sc.nextLine();
-        sc.next();
+//        sc.next();
 
         return new Endereco(cidade, estado, bairro, cep);
     }
@@ -48,15 +47,15 @@ public class Banco {
 
         System.out.println("Dia (número): ");
         int dia = sc.nextInt();
-        sc.next();
+        //sc.next();
 
         System.out.println("Mês (número): ");
         int mes = sc.nextInt();
-        sc.next();
+        //sc.next();
 
         System.out.println("Ano (número): ");
         int ano = sc.nextInt();
-        sc.next();
+        //sc.next();
 
         return new Calendar.Builder().
                 setFields(Calendar.YEAR, ano, Calendar.MONTH, mes, Calendar.DAY_OF_MONTH, dia).build();
@@ -79,12 +78,17 @@ public class Banco {
             sc.nextLine(); //limpar buffer
             switch(escolha) {
                 case 1: {
+                    if(agencias.isEmpty()) System.out.println("Lista de agencias vazia!");
                     for (Agencia ag : agencias.values()) {
                         System.out.println(ag);
                     }
                     continue;
                 }
                 case 2: {
+                    if(agencias.isEmpty()) {
+                        System.out.println("Lista de agencias vazia!");
+                        continue;
+                    }
                     System.out.println("Digite número da agência que deseja administrar");
                     String nro = sc.nextLine();
                     Agencia ag = agencias.get(nro);
@@ -99,10 +103,11 @@ public class Banco {
                     //TODO: Implementar! (lembrar de nao permitir agencias com mesmo numero)
                     System.out.println("Nome ficticio da agencia?");
                     String nome = sc.nextLine();
-                    sc.next();
+                    String nro;
+                    //sc.next();
                     while (true) {
                         System.out.println("Numero da agencia? (6 digitos)");
-                        String nro = sc.nextLine();
+                        nro = sc.nextLine();
                         if(nro.length() != 6) {
                             System.out.println("Número de digitos incorreto!");
                             continue;
@@ -113,13 +118,24 @@ public class Banco {
                         }
                         break;
                     }
-                    System.out.println("Cadastre o endereço");
+                    System.out.println("Insira o endereço");
                     Endereco end = CriarEndereco();
 
-                    System.out.println("Cadastro do gerente:");
+                    Agencia nova = new Agencia(nome, nro, end);
+                    agencias.put(nro, nova);
 
+                    System.out.println("Cadastre o gerente: ");
+                    Gerente g = new Gerente();
+                    g.LerDoTeclado(nova); //TODO: Mudar isso aqui
+                    nova.setGerente(g);
+                    nova.CadastraFuncionario(g); //o gerente também eh funcionário
+                    continue;
                 }
                 case 4: {
+                    if(agencias.isEmpty()) {
+                        System.out.println("Lista de agencias vazia!");
+                        continue;
+                    }
                     System.out.println("Digite nro da agência que deseja remover");
                     String nro = sc.nextLine();
                     Agencia result = agencias.remove(nro);

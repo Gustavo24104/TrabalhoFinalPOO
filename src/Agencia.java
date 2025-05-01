@@ -13,11 +13,9 @@ public class Agencia implements Serializable {
         this.nomeFicticio = nomeFicticio;
         this.nroAgencia = nroAgencia;
         this.end = end;
+        //this.gerente = gerente;
         this.funcs = new TreeMap<>();
         clientes = new TreeMap<>();
-//        for(Funcionario f : funcs) {
-//            this.funcs.put(f.getCpf(), f);
-//        }
     }
 
     public Agencia(String nomeFicticio, String nroAgencia) {
@@ -26,14 +24,27 @@ public class Agencia implements Serializable {
     }
 
     public void CadastraFuncionario(Funcionario f) {
+        if(funcs.containsKey(f.getCpf())) {
+            System.out.println("Funcionário de cpf " + f.getCpf() + " já cadastrado!");
+            return;
+        }
         funcs.put(f.getCpf(), f);
+        System.out.println("Funcionário " + f.getNome() + " cadastrado com sucesso! Bem vindo à empresa!");
+    }
+
+    public Funcionario EncontraFuncionario(String key) {
+        return funcs.get(key);
     }
 
 
 
-
-    public void DemiteFuncionario(Funcionario f){
-        funcs.remove(f.getCpf());
+    public void DemiteFuncionario(String chave){
+        Funcionario result = funcs.remove(chave);
+        if(result == null) {
+            System.out.println("Funcionário de cpf " + chave + " não encontrado!");
+            return;
+        }
+        System.out.println("Funcionário " + result.getNome() + " removido com sucesso!");
     }
 
 
@@ -59,10 +70,11 @@ public class Agencia implements Serializable {
                     1 - Logar como funcionario
                     2 - Logar como gerente
                     3 - Logar como cliente
-                    -1 - Sair""");
+                    -1 - Voltar""");
             escolha = sc.nextInt();
-            switch (escolha) {
-                case 1: {
+            sc.nextLine(); //limpar buffer
+            //switch (escolha) {
+                if(escolha == 1) {
                     System.out.println("Digite cpf funcionário");
                     String cpf = sc.nextLine();
                     l = funcs.get(cpf);
@@ -74,13 +86,13 @@ public class Agencia implements Serializable {
                     break;
                 }
 
-                case 2: {
-                    l = gerente;
-                    user = gerente.getCpf();
+                if(escolha == 2) {
+                    l = gerente; // como toda agencia so tem um gerente basta usá-lo
+                    user = gerente.getCpf(); // usuario do gerente eh o cpf
                     break;
                 }
 
-                case 3: {
+                if(escolha == 3) {
                     System.out.println("Digite cpf do cliente:");
                     String cpf = sc.nextLine();
                     l = clientes.get(cpf);
@@ -91,18 +103,20 @@ public class Agencia implements Serializable {
                     }
                     break;
                 }
-                case -1: {
+
+                if(escolha == -1) {
                     return;
                 }
-                default: {
+                else {
                     System.out.println("Escolha invalida!");
                     continue;
                 }
-            }
+            //}
         }
         System.out.println("Digite senha: ");
         String senha = sc.nextLine();
-        if(l != null) l.Login(user, senha);
+        l.Login(user, senha);
+        Menu();
     }
 
 
@@ -125,9 +139,9 @@ public class Agencia implements Serializable {
     }
 
     public String toString() {
-        return "Nome: " + nomeFicticio + ". Número: " + nroAgencia; //+
-//                "\nEndereço: " + end +
-//                "\nGerente: " + gerente.getNome();
+        return "Nome: " + nomeFicticio + ". Número: " + nroAgencia +
+                "\nEndereço: " + end +
+                "\nGerente: " + gerente.getNome();
     }
 
 

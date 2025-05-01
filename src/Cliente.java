@@ -2,7 +2,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Scanner;
 
-public class Cliente extends Pessoa implements Logavel {
+public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
     private HashMap<String, Conta> contas;
     private Agencia ag;
     private String senha;
@@ -22,9 +22,19 @@ public class Cliente extends Pessoa implements Logavel {
         this.ag = ag;
     }
 
-    public Cliente() {
+    //Construtor vazio: Lê do teclado
+    public Cliente(Agencia ag) {
         contas = new HashMap<>();
     }
+
+    public void LerDoTeclado(Agencia ag) {
+        this.ag = ag; //agencia onde o cliente esta cadastrada
+        super.LerDoTeclado();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Digite senha: ");
+        senha = sc.nextLine();
+    }
+
 
     //métodos
 
@@ -69,6 +79,7 @@ public class Cliente extends Pessoa implements Logavel {
                 Selecione:
                 1 - Acessar conta
                 2 - Debloquear conta
+                3 - Trocar senha
                 -1 - Sair""");
             escolha = sc.nextInt();
             switch (escolha) {
@@ -101,6 +112,12 @@ public class Cliente extends Pessoa implements Logavel {
                     System.out.println("Digite a senha da conta:");
                     String pwd = sc.nextLine();
                     c.DesbloquarConta(pwd);
+                    continue;
+                }
+                case 3: {
+                    System.out.println("Digite a nova senha: ");
+                    senha = sc.nextLine();
+                    System.out.println("Senha modificada!");
                     continue;
                 }
                 case -1: {

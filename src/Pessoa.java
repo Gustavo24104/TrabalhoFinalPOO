@@ -1,7 +1,8 @@
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Scanner;
 
-public abstract class Pessoa implements Serializable {
+public abstract class Pessoa implements Serializable,  PodeSerLidoDoTeclado {
     private String nome, cpf, escolaridade, estadoCivil;
     Calendar dataNascimento;
     private Endereco end;
@@ -28,6 +29,55 @@ public abstract class Pessoa implements Serializable {
         return true;
     }
 
+    //Função para verificar se o cpf esta no formato correto
+    private boolean ParseCPF() {
+        //Primeiro verifica se ta no formato correto
+        if (cpf.length() < 14) return false;
+
+        for(int i = 0; i < 14; ++i) {
+            if(i == 3 || i == 7) { //posições com ponto
+                if(cpf.charAt(i) != '.') return false;
+                continue;
+            }
+            if(i == 11) {
+                if (cpf.charAt(i) != '-') return false;
+                continue;
+            }
+            if(!Character.isDigit(cpf.charAt(i))) return false;
+        }
+        return ValidaCPF(); //depois valida o cpf
+    }
+
+    public void LerDoTeclado() {
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Digite nome: ");
+        nome = sc.nextLine();
+        //sc.next();
+
+        System.out.println("Digite escolaridade: ");
+        escolaridade = sc.nextLine();
+        //sc.next();
+
+        System.out.println("Digite estado civil: ");
+        estadoCivil = sc.nextLine();
+        //sc.next();
+
+        boolean validar = false;
+        while(!validar) {
+            System.out.println("Digite cpf (xxx.yyy.zzz-ab): ");
+            cpf = sc.nextLine();
+            //sc.next();
+            validar = ParseCPF();
+            if(!validar) System.out.println("CPF inválido! Por favor tente novamente!");
+        }
+
+        System.out.println("Digite data de nascimento: ");
+        dataNascimento = Banco.CriarData();
+
+        System.out.println("Digite endereço: ");
+        end = Banco.CriarEndereco();
+    }
+
     
     public Pessoa(String nome, String cpf, String escolaridade,
                   String estadoCivil, Calendar dataNascimento, Endereco end) throws CPFInvalidoException{
@@ -42,11 +92,29 @@ public abstract class Pessoa implements Serializable {
         this.end = end;
     }
 
+    //Construtor vazio
     public Pessoa() {
 
     }
 
-//Getters and Setters
+    public Pessoa(Pessoa p) {
+        this.nome = p.nome;
+        this.dataNascimento = p.dataNascimento;
+    }
+
+    public String toString() {
+        return "Pessoa{" +
+                "nome='" + nome + '\'' +
+                ", cpf='" + cpf + '\'' +
+                ", escolaridade='" + escolaridade + '\'' +
+                ", estadoCivil='" + estadoCivil + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                ", end=" + end +
+                '}';
+    }
+
+
+    //Getters and Setters
 
 
     public String getNome() {

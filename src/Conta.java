@@ -122,16 +122,26 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
                     1 - Sacar dinheiro
                     2 - Depositar dinheiro
                     3 - Transferencia bancária
+                    4 - Trocar senha
                     -1 Sair""");
             switch (escolha) {
                 case 1: {
+                    //TODO!
                     //Transacao(valor);
                 }
                 case 2: {
+                    //TODO!
                     //Transacao(valor);
                 }
                 case 3: {
+                    //TODO!
                     //Transacao();
+                }
+                case 4: {
+                    System.out.println("Digite nova senha: ");
+                    senha = sc.nextLine();
+                    System.out.println("Senha modificada!");
+                    continue;
                 }
                 case -1: {
                     break;
