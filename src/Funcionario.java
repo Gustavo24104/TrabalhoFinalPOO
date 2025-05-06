@@ -116,7 +116,7 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                     sc.nextLine();
                     System.out.print("Digite CPF do cliente: ");
                     String cpfCliente = sc.nextLine();
-                    Cliente clienteEncontrado = trabalho.EcontraCliente(cpfCliente);
+                    Cliente clienteEncontrado = trabalho.EncontraCliente(cpfCliente);
                     if (clienteEncontrado == null) {
                         System.out.println("Cliente de CPF " + cpfCliente + " não encontrado!");
                         continue;
@@ -193,7 +193,7 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                         else if (aux.equalsIgnoreCase("true")) {
                             System.out.println("Digite cpf da outra conta: ");
                             String outroCpf = sc.nextLine();
-                            Cliente outro = trabalho.EcontraCliente(outroCpf);
+                            Cliente outro = trabalho.EncontraCliente(outroCpf);
                             if (outro == null) {
                                 System.out.println("cpf " + outroCpf +  "não encontrado!");
                                 continue;
@@ -214,7 +214,7 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                     sc.nextLine();
                     System.out.println("Digite cpf do dono da conta: ");
                     String cpfDono = sc.nextLine();
-                    Cliente c = trabalho.EcontraCliente(cpfDono);
+                    Cliente c = trabalho.EncontraCliente(cpfDono);
                     if(c == null) {
                         System.out.println("Cliente de cpf " + cpfDono + " não encontrado!");
                         continue;
@@ -233,7 +233,7 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                     sc.nextLine();
                     System.out.print("Digite CPF do cliente: ");
                     String cpf = sc.nextLine();
-                    Cliente c = trabalho.EcontraCliente(cpf);
+                    Cliente c = trabalho.EncontraCliente(cpf);
                     if (c == null) {
                         System.out.println("Cliente não encontrado.");
                         break;

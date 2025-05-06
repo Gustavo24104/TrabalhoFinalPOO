@@ -48,7 +48,7 @@ public class Agencia implements Serializable {
         clientes.put(c.getCpf(), c);
     }
 
-    public Cliente EcontraCliente(String cpf) {
+    public Cliente EncontraCliente(String cpf) {
         return clientes.get(cpf);
     }
 

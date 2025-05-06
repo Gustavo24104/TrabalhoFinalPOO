@@ -121,6 +121,7 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
                 1 - Sacar dinheiro
                 2 - Depositar dinheiro
                 3 - Transferência bancária
+                5 - Verificar saldo e informações da conta
                 4 - Trocar senha
                 -1 - Sair
                 """);
@@ -164,7 +165,39 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
                 }
                 case 3: {
                     // TODO: Implementar transferência
-                    System.out.println("Funcionalidade ainda não implementada.");
+                    System.out.println("Qual a agência da outra conta?");
+                    String aux = sc.nextLine();
+                    Agencia outra = Banco.EncontrarAgencia(aux);
+                    if(outra == null) {
+                        System.out.println("Agência de número " + aux + " não encontrada!");
+                        continue;
+                    }
+
+                    System.out.println("Qual o cpf do cliente que receberá transferencia?");
+                    aux = sc.nextLine();
+                    Cliente clienteEncontrado = outra.EncontraCliente(aux);
+                    if(clienteEncontrado == null) {
+                        System.out.println("Cliente de cpf " + aux + " não encontrado!");
+                        continue;
+                    }
+
+                    System.out.println("Qual o número da conta que receberá a transferencia?");
+                    aux = sc.nextLine();
+                    Conta cn = clienteEncontrado.EncontraConta(aux);
+                    if(cn == null) {
+                        System.out.println("Conta de nro " + aux + " não encontrada!");
+                        continue;
+                    }
+
+                    System.out.println("Valor da transação?");
+                    double val = sc.nextDouble();
+                    sc.nextLine();
+
+                    Transacao t = new Transacao(this, null);
+                    t.setTipo("transferencia");
+                    t.setValor(val);
+                    t.RealizaMovimentacao(null, cn);
+                    System.out.println("Transferencia feita com sucesso!");
                     break;
                 }
                 case 4: {
@@ -177,6 +210,9 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
                         System.out.println("Senha modificada com sucesso!");
                     }
                     break;
+                }
+                case 5: {
+                    MostraInfos();
                 }
                 case -1: {
                     System.out.println("Saindo da conta...");
@@ -193,8 +229,8 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
 
     public void MostraInfos(){
         System.out.println("Numero da conta: " + nroConta);
-        System.out.println("Status " + (estaAtiva ? "ativa" : "inativa"));
         System.out.println("Saldo atual: " + saldoAtual);
+        System.out.println("Status " + (estaAtiva ? "ativa" : "inativa"));
         System.out.println("Ultima movimentacao em: " + ultimaMovimentacao.get(Calendar.DAY_OF_MONTH)
         + "/" + ultimaMovimentacao.get(Calendar.MONTH) + "/" +  ultimaMovimentacao.get(Calendar.YEAR));
     }

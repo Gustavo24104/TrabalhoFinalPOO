@@ -38,12 +38,11 @@ public class Transacao {
                 conta.Saque(valor);
             }
             catch (ValorInvalidoException e) {
-                System.out.println(e);
+                System.out.println("Valor de transação inválido!");
             }
 
             catch (SenhaInvalidaException e) {
-                System.out.println("Senha inválida!\n " +
-                        "Você tem " + (3 - conta.getTentativasErradas()) + " tentativas restantes.");
+                System.out.println(e.getMessage());
             }
 
         }
@@ -52,7 +51,7 @@ public class Transacao {
             try {
                 conta.Deposito(valor);
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println(e.getMessage());
             }
         }
 
@@ -62,11 +61,11 @@ public class Transacao {
                 System.out.println(conta.getSaldoAtual());
             }
             catch (SenhaInvalidaException e) {
-                System.out.println(e);
+                System.out.println(e.getMessage());
             }
         }
 
-        if(tipo.equals("pagamento")) {
+        if(tipo.equals("transferencia")) {
             try {
                 conta.Saque(valor);
                 recebedor.Deposito(valor);
