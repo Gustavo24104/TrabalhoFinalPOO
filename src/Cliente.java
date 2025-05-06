@@ -22,7 +22,6 @@ public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
         this.ag = ag;
     }
 
-    //Construtor vazio: Lê do teclado
     public Cliente(Agencia ag) {
         contas = new TreeMap<>();
     }

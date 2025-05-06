@@ -116,34 +116,32 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                     sc.nextLine();
                     System.out.print("Digite CPF do cliente: ");
                     String cpfCliente = sc.nextLine();
-                    Cliente clienteNovo = trabalho.EcontraCliente(cpfCliente);
-                    if (clienteNovo == null) {
+                    Cliente clienteEncontrado = trabalho.EcontraCliente(cpfCliente);
+                    if (clienteEncontrado == null) {
                         System.out.println("Cliente de CPF " + cpfCliente + " não encontrado!");
-                        break;
+                        continue;
                     }
 
                     int tipoConta;
-                    do {
-                        System.out.println("Selecione tipo de conta:" +
-                                "\n1 - Corrente" +
-                                "\n2 - Poupança" +
-                                "\n3 - Salário");
-                        System.out.print("Opção: ");
-                        while (!sc.hasNextInt()) {
+                        //System.out.print("Opção: ");
+                        while (true) {
+                            System.out.println("Selecione tipo de conta:" +
+                                    "\n1 - Corrente" +
+                                    "\n2 - Poupança" +
+                                    "\n3 - Salário");
+                            tipoConta = sc.nextInt();
                             sc.nextLine();
-                            System.out.println("Tipo inválido");
-                            System.out.print("Opção: ");
+                            if(tipoConta > 3 || tipoConta < 1) {
+                                System.out.println("Tipo inválido!");
+                                continue;
+                            }
+                            break;
                         }
-                        tipoConta = sc.nextInt();
-                        sc.nextLine();
-                        if (tipoConta < 1 || tipoConta > 3) {
-                            System.out.println("Opção inválida! Escolha entre 1 e 3.");
-                        }
-                    } while (tipoConta < 1 || tipoConta > 3);
+                        //sc.nextLine();
 
                     System.out.print("Digite senha da conta: ");
                     String senhaConta = sc.nextLine();
-                    Calendar dataAbertura = Banco.CriarData();
+                    Calendar dataAbertura = Calendar.getInstance();
 
                     Conta novaConta = null;
 
@@ -157,8 +155,8 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                             double taxaAdm = sc.nextDouble();
                             sc.nextLine();
 
-                            novaConta = new ContaCorrente(trabalho.GerarNumeroDeConta(clienteNovo), senhaConta, 0.0,
-                                    dataAbertura, dataAbertura, true, clienteNovo, trabalho,
+                            novaConta = new ContaCorrente(trabalho.GerarNumeroDeConta(clienteEncontrado), senhaConta, 0.0,
+                                    dataAbertura, dataAbertura, true, clienteEncontrado, trabalho,
                                     limCheq, taxaAdm);
                             break;
 
@@ -166,8 +164,8 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                             System.out.print("Digite rendimento mensal: ");
                             double rendimento = sc.nextDouble();
                             sc.nextLine();
-                            novaConta = new ContaPoupanca(trabalho.GerarNumeroDeConta(clienteNovo), senhaConta, 0.0,
-                                    dataAbertura, dataAbertura, true, clienteNovo, trabalho,
+                            novaConta = new ContaPoupanca(trabalho.GerarNumeroDeConta(clienteEncontrado), senhaConta, 0.0,
+                                    dataAbertura, dataAbertura, true, clienteEncontrado, trabalho,
                                     rendimento);
                             break;
 
@@ -180,16 +178,36 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                             double limTransf = sc.nextDouble();
                             sc.nextLine();
 
-                            novaConta = new ContaSalario(trabalho.GerarNumeroDeConta(clienteNovo), senhaConta, 0.0,
-                                    dataAbertura, dataAbertura, true, clienteNovo, trabalho,
+                            novaConta = new ContaSalario(trabalho.GerarNumeroDeConta(clienteEncontrado), senhaConta, 0.0,
+                                    dataAbertura, dataAbertura, true, clienteEncontrado, trabalho,
                                     limSaque, limTransf);
                             break;
+                    }
 
+                    while (true) {
+                        System.out.println("Essa conta eh conjunta? (true/false)");
+                        String aux = sc.nextLine();
+                        if (aux.equalsIgnoreCase("false")) {
+                            break;
+                        }
+                        else if (aux.equalsIgnoreCase("true")) {
+                            System.out.println("Digite cpf da outra conta: ");
+                            String outroCpf = sc.nextLine();
+                            Cliente outro = trabalho.EcontraCliente(outroCpf);
+                            if (outro == null) {
+                                System.out.println("cpf " + outroCpf +  "não encontrado!");
+                                continue;
+                            }
+                            outro.NovaConta(novaConta);
+                            break;
+                        }
+                        else {
+                            System.out.println("Opção invalida!");
+                        }
                     }
-                    if (novaConta != null) {
-                        clienteNovo.NovaConta(novaConta);
-                        System.out.println("Conta criada com sucesso: " + novaConta.getNroConta());
-                    }
+
+                    clienteEncontrado.NovaConta(novaConta);
+                    System.out.println("Conta criada com sucesso: " + novaConta.getNroConta());
                     break;
                 }
                 case 3: {
