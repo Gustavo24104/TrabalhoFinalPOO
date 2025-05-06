@@ -1,5 +1,6 @@
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Funcionario extends Pessoa implements Logavel, Serializable {
@@ -7,7 +8,6 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
     private double salario;
     private Calendar anoDeIngresso;
     private String senha;
-
 
     private Agencia trabalho;
     private boolean logado = false; //Usada para indicar se podemos acessar o menu ou nao
@@ -27,9 +27,7 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
     }
 
     //Construtor vazio
-    public Funcionario() {
-
-    }
+    public Funcionario() {}
 
     public Funcionario(Funcionario f) {
         super(f);
@@ -45,8 +43,6 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
         this.logado = f.logado;
     }
 
-
-
     public void LerDoTeclado(Agencia ag) {
         this.trabalho = ag; // Agencia onde ele trabalha
         super.LerDoTeclado();
@@ -54,23 +50,23 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
 
         System.out.println("Digite sexo: ");
         sexo = sc.nextLine();
-//        sc.next();
 
         System.out.println("Digite cargo do funcionário: ");
         cargo = sc.nextLine();
-//        sc.next();
 
         System.out.println("Digite RG: ");
         RG = sc.nextLine();
-//        sc.next();
 
         System.out.println("Digite carteira de trabalho: ");
         carteiraTrabalho = sc.nextLine();
-//        sc.next();
 
         System.out.println("Digite senha: ");
         senha = sc.nextLine();
-        //sc.next();
+        while(senha.length() < 6) {
+            System.out.println("Senha deve ter ao menos 6 caracteres!");
+            System.out.println("Digite senha: ");
+            senha = sc.nextLine();
+        }
 
         System.out.println("Digite data de entrada do funcionário: ");
         anoDeIngresso = Banco.CriarData();
@@ -88,7 +84,6 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
         }
     }
 
-    //TODO:
     public void Menu() {
         if(!logado) {
             System.out.println("Usuário nao logado!");
@@ -104,18 +99,101 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                     1 - Cadastrar novo cliente
                     2 - Cadastrar nova conta
                     3 - Gerenciar conta
-                    4 - Trocar senha
+                    4 - Mostrar Informações de um Cliente
+                    5 - Ver Clientes
+                    6 - Trocar senha
                     -1 - Voltar""");
             escolha = sc.nextInt();
             switch (escolha){
                 case 1: {
-                    //TODO!
+                    Cliente novo = new Cliente(trabalho);
+                    novo.LerDoTeclado(trabalho);
+                    trabalho.CadastraCliente(novo);
+                    System.out.println("Cliente cadastrado com sucesso!");
+                    continue;
                 }
                 case 2: {
-                    //TODO!
-                }
+                    sc.nextLine();
+                    System.out.print("Digite CPF do cliente: ");
+                    String cpfCliente = sc.nextLine();
+                    Cliente clienteNovo = trabalho.EcontraCliente(cpfCliente);
+                    if (clienteNovo == null) {
+                        System.out.println("Cliente de CPF " + cpfCliente + " não encontrado!");
+                        break;
+                    }
 
+                    int tipoConta;
+                    do {
+                        System.out.println("Selecione tipo de conta:" +
+                                "\n1 - Corrente" +
+                                "\n2 - Poupança" +
+                                "\n3 - Salário");
+                        System.out.print("Opção: ");
+                        while (!sc.hasNextInt()) {
+                            sc.nextLine();
+                            System.out.println("Tipo inválido");
+                            System.out.print("Opção: ");
+                        }
+                        tipoConta = sc.nextInt();
+                        sc.nextLine();
+                        if (tipoConta < 1 || tipoConta > 3) {
+                            System.out.println("Opção inválida! Escolha entre 1 e 3.");
+                        }
+                    } while (tipoConta < 1 || tipoConta > 3);
+
+                    System.out.print("Digite senha da conta: ");
+                    String senhaConta = sc.nextLine();
+                    Calendar dataAbertura = Banco.CriarData();
+
+                    Conta novaConta = null;
+
+                    switch (tipoConta) {
+                        case 1:
+                            System.out.print("Digite limite do cheque especial: ");
+                            double limCheq = sc.nextDouble();
+                            sc.nextLine();
+
+                            System.out.print("Digite valor da taxa administrativa: ");
+                            double taxaAdm = sc.nextDouble();
+                            sc.nextLine();
+
+                            novaConta = new ContaCorrente(trabalho.GerarNumeroDeConta(clienteNovo), senhaConta, 0.0,
+                                    dataAbertura, dataAbertura, true, clienteNovo, trabalho,
+                                    limCheq, taxaAdm);
+                            break;
+
+                        case 2:
+                            System.out.print("Digite rendimento mensal: ");
+                            double rendimento = sc.nextDouble();
+                            sc.nextLine();
+                            novaConta = new ContaPoupanca(trabalho.GerarNumeroDeConta(clienteNovo), senhaConta, 0.0,
+                                    dataAbertura, dataAbertura, true, clienteNovo, trabalho,
+                                    rendimento);
+                            break;
+
+                        case 3:
+                            System.out.print("Digite limite de saque: ");
+                            double limSaque = sc.nextDouble();
+                            sc.nextLine();
+
+                            System.out.print("Digite limite de transferência: ");
+                            double limTransf = sc.nextDouble();
+                            sc.nextLine();
+
+                            novaConta = new ContaSalario(trabalho.GerarNumeroDeConta(clienteNovo), senhaConta, 0.0,
+                                    dataAbertura, dataAbertura, true, clienteNovo, trabalho,
+                                    limSaque, limTransf);
+                            break;
+
+                    }
+                    if (novaConta != null) {
+                        clienteNovo.NovaConta(novaConta);
+                        System.out.println("Conta criada com sucesso: " + novaConta.getNroConta());
+                    }
+                    break;
+                }
                 case 3: {
+                    sc.nextLine();
                     System.out.println("Digite cpf do dono da conta: ");
                     String cpfDono = sc.nextLine();
                     Cliente c = trabalho.EcontraCliente(cpfDono);
@@ -134,8 +212,54 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                     continue;
                 }
                 case 4: {
+                    sc.nextLine();
+                    System.out.print("Digite CPF do cliente: ");
+                    String cpf = sc.nextLine();
+                    Cliente c = trabalho.EcontraCliente(cpf);
+                    if (c == null) {
+                        System.out.println("Cliente não encontrado.");
+                        break;
+                    }
+
+                    c.MostrarInfos();
+                    break;
+                }
+                case 5: {
+                    if (trabalho.getClientes() != null && !trabalho.getClientes().isEmpty()) {
+                        System.out.printf("%-20s | %-15s | %-15s | %-12s | %-5s%n",
+                                "NOME", "CPF", "TIPO CONTA", "Nº CONTA", "ATIVA");
+
+                        for (Cliente cliente : trabalho.getClientes().values()) {
+                            Map<String, Conta> contas = cliente.getContas();
+
+                            if (contas == null || contas.isEmpty()) {
+                                // Cliente sem contas
+                                System.out.printf("%-20s | %-15s | %-15s | %-12s | %-5s%n",
+                                        cliente.getNome(), cliente.getCpf(), "-", "-", "-");
+                            } else {
+                                // Cliente com uma ou mais contas
+                                for (Conta conta : contas.values()) {
+                                    String ativa = conta.isEstaAtiva() ? "Sim" : "Não";
+                                    System.out.printf("%-20s | %-15s | %-15s | %-12s | %-5s%n",
+                                            cliente.getNome(), cliente.getCpf(),
+                                            conta.getTipoConta(), conta.getNroConta(), ativa);
+                                }
+                            }
+                        }
+                        System.out.println();
+                    } else {
+                        System.out.println("Não tem clientes cadastrados na agência.");
+                    }
+                    break;
+                }
+                case 6: {
+                    sc.nextLine();
                     System.out.println("Digite nova senha: ");
                     senha = sc.nextLine();
+                    if(senha.length() < 6) {
+                        System.out.println("Senha deve ter ao menos 6 caracteres!\n");
+                        continue;
+                    }
                     System.out.println("Senha modificada!");
                     continue;
                 }
@@ -162,30 +286,44 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                     3 - Deixar conta ativa/inativa
                     -1 - Voltar""");
             escolha = sc.nextInt();
+
             switch (escolha) {
                 case 1: {
-                    //TODO:
+                    if (gerenciada instanceof ContaCorrente) {
+                        System.out.print("Novo limite de cheque especial: ");
+                        double novoLimite = sc.nextDouble(); sc.nextLine();
+                        ((ContaCorrente) gerenciada).setLimChequeEspecial(novoLimite);
+                        System.out.println("Limite atualizado com sucesso!");
+                    } else {
+                        System.out.println("Esta conta não é Conta Corrente.");
+                    }
+                    break;
                 }
                 case 2: {
-                    //TODO:
+                    if (gerenciada instanceof ContaSalario) {
+                        System.out.print("Novo limite de saque: ");
+                        double novoLimite = sc.nextDouble(); sc.nextLine();
+                        ((ContaSalario) gerenciada).setLimSaque(novoLimite);
+                        System.out.println("Limite de saque atualizado com sucesso!");
+                    } else {
+                        System.out.println("Esta conta não é Conta Salário.");
+                    }
+                    break;
                 }
                 case 3: {
-                    //TODO:
-
+                    gerenciada.setEstaAtiva(!gerenciada.isEstaAtiva());
+                    System.out.println("Conta agora está " + (gerenciada.isEstaAtiva() ? "Ativa." : "Inativa."));
+                    break;
                 }
-                case -1: {
+                case -1:
                     return;
-                }
-                default: {
-                    System.out.println("Opção inválida");
-                    continue;
-                }
+                default:
+                    System.out.println("Opção inválida!");
             }
         }
     }
 
     public void Login(String usuario, String senha) {
-        //System.out.println("aqui!");
         try {
             ValidaSenha(senha);
             if(usuario.equals(this.getCpf().toLowerCase())) {
@@ -197,15 +335,14 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
         }
     }
 
-
     @Override
     public String toString() {
          return super.toString() +
-                "\nsexo: " + sexo +
-                "\ncarteiraTrabalho: " + carteiraTrabalho +
+                "\nSexo: " + sexo +
+                "\nCarteira de Trabalho: " + carteiraTrabalho +
                 "\nRG: " + RG +
-                "\ncargo: " + cargo +
-                "\nsalario: " + salario +
+                "\nCargo: " + cargo +
+                "\nSalario: " + String.format("%.4f", salario)+
                 "\nFuncionário desde: " + anoDeIngresso.get(Calendar.DAY_OF_MONTH) + "/"
                  + anoDeIngresso.get(Calendar.MONTH) + "/" + anoDeIngresso.get(Calendar.YEAR);
     }
@@ -222,71 +359,34 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
         salario = sal;
     }
 
-    //Getters and Setters
-    public Calendar getAnoDeIngresso() {
-        return anoDeIngresso;
-    }
-    public void setAnoDeIngresso(Calendar anoDeIngresso) {
-        this.anoDeIngresso = anoDeIngresso;
-    }
-
-    public double getSalario() {
-        return salario;
-    }
-    public void setSalario(double salario) {
-        this.salario = salario;
-    }
-
-    public String getCargo() {
-        return cargo;
-    }
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
-
-    public String getRG() {
-        return RG;
-    }
-    public void setRG(String RG) {
-        this.RG = RG;
-    }
-
-    public String getCarteiraTrabalho() {
-        return carteiraTrabalho;
-    }
-    public void setCarteiraTrabalho(String carteiraTrabalho) {
-        this.carteiraTrabalho = carteiraTrabalho;
-    }
-
-    public String getSexo() {
-        return sexo;
-    }
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
-    }
-
-    protected void setLogado(boolean valor) {
-        logado = valor;
-    }
-
-    protected boolean isLogado() {
-        return logado;
-    }
-
     public void ValidaSenha(String senha) throws SenhaInvalidaException {
         if(!this.senha.equals(senha)) {
             throw new SenhaInvalidaException("Senha invalida!\n");
         }
     }
 
+    //Getters and Setters
+    public Calendar getAnoDeIngresso() {return anoDeIngresso;}
+    public void setAnoDeIngresso(Calendar anoDeIngresso) {this.anoDeIngresso = anoDeIngresso;}
 
-    public Agencia getTrabalho() {
-        return trabalho;
-    }
+    public double getSalario() {return salario;}
+    public void setSalario(double salario) {this.salario = salario;}
 
-    public void setTrabalho(Agencia trabalho) {
-        this.trabalho = trabalho;
-    }
+    public String getCargo() {return cargo;}
+    public void setCargo(String cargo) {this.cargo = cargo;}
 
+    public String getRG() {return RG;}
+    public void setRG(String RG) {this.RG = RG;}
 
+    public String getCarteiraTrabalho() {return carteiraTrabalho;}
+    public void setCarteiraTrabalho(String carteiraTrabalho) {this.carteiraTrabalho = carteiraTrabalho;}
+
+    public String getSexo() {return sexo;}
+    public void setSexo(String sexo) {this.sexo = sexo;}
+
+    protected boolean isLogado() {return logado;}
+    protected void setLogado(boolean valor) {logado = valor;}
+
+    public Agencia getTrabalho() {return trabalho;}
+    public void setTrabalho(Agencia trabalho) {this.trabalho = trabalho;}
 }

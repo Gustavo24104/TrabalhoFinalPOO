@@ -52,21 +52,17 @@ public abstract class Pessoa implements Serializable,  PodeSerLidoDoTeclado {
         Scanner sc = new Scanner(System.in);
         System.out.println("Digite nome: ");
         nome = sc.nextLine();
-        //sc.next();
 
         System.out.println("Digite escolaridade: ");
         escolaridade = sc.nextLine();
-        //sc.next();
 
         System.out.println("Digite estado civil: ");
         estadoCivil = sc.nextLine();
-        //sc.next();
 
         boolean validar = false;
         while(!validar) {
             System.out.println("Digite cpf (xxx.yyy.zzz-ab): ");
             cpf = sc.nextLine();
-            //sc.next();
             validar = ParseCPF();
             if(!validar) System.out.println("CPF inválido! Por favor tente novamente!");
         }
@@ -78,7 +74,6 @@ public abstract class Pessoa implements Serializable,  PodeSerLidoDoTeclado {
         end = Banco.CriarEndereco();
     }
 
-    
     public Pessoa(String nome, String cpf, String escolaridade,
                   String estadoCivil, Calendar dataNascimento, Endereco end) throws CPFInvalidoException{
         this.nome = nome;
@@ -93,9 +88,7 @@ public abstract class Pessoa implements Serializable,  PodeSerLidoDoTeclado {
     }
 
     //Construtor vazio
-    public Pessoa() {
-
-    }
+    public Pessoa() {}
 
     public Pessoa(Pessoa p) {
         this.nome = p.nome;
@@ -107,23 +100,19 @@ public abstract class Pessoa implements Serializable,  PodeSerLidoDoTeclado {
     }
 
     public String toString() {
-        return "\nome: " + nome +
-                "\ncpf: " + cpf +
-                "\nescolaridade: " + escolaridade +
-                "\nestadoCivil: " + estadoCivil +
-                "\ndataNascimento: " + dataNascimento.get(Calendar.DAY_OF_MONTH) + "/" +
+        return "\nNome: " + nome +
+                "\nCPF: " + cpf +
+                "\nEscolaridade: " + escolaridade +
+                "\nEstado Civil: " + estadoCivil +
+                "\nData de Nascimento: " + dataNascimento.get(Calendar.DAY_OF_MONTH) + "/" +
                 dataNascimento.get(Calendar.MONTH) + "/" + dataNascimento.get(Calendar.YEAR) +
-                "\nend: " + end;
+                "\nEndereço: " + end;
     }
 
-
     //Getters and Setters
-
-
     public String getNome() {
         return nome;
     }
-
     public void setNome(String nome) {
         this.nome = nome;
     }
@@ -131,7 +120,6 @@ public abstract class Pessoa implements Serializable,  PodeSerLidoDoTeclado {
     public String getCpf() {
         return cpf;
     }
-
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
@@ -139,7 +127,6 @@ public abstract class Pessoa implements Serializable,  PodeSerLidoDoTeclado {
     public String getEscolaridade() {
         return escolaridade;
     }
-
     public void setEscolaridade(String escolaridade) {
         this.escolaridade = escolaridade;
     }
@@ -147,7 +134,6 @@ public abstract class Pessoa implements Serializable,  PodeSerLidoDoTeclado {
     public String getEstadoCivil() {
         return estadoCivil;
     }
-
     public void setEstadoCivil(String estadoCivil) {
         this.estadoCivil = estadoCivil;
     }
@@ -155,7 +141,6 @@ public abstract class Pessoa implements Serializable,  PodeSerLidoDoTeclado {
     public Calendar getDataNascimento() {
         return dataNascimento;
     }
-
     public void setDataNascimento(Calendar dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
@@ -163,7 +148,6 @@ public abstract class Pessoa implements Serializable,  PodeSerLidoDoTeclado {
     public Endereco getEnd() {
         return end;
     }
-
     public void setEnd(Endereco end) {
         this.end = end;
     }

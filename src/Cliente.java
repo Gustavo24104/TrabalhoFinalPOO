@@ -1,9 +1,9 @@
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
-    private HashMap<String, Conta> contas;
+    private TreeMap<String, Conta> contas;
     private Agencia ag;
     private String senha;
     boolean logado = false;
@@ -18,31 +18,79 @@ public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
     public Cliente(String nome, String cpf, String escolaridade,
                    String estadoCivil, Calendar dataNascimento, Endereco end, Agencia ag) {
         super(nome, cpf, escolaridade, estadoCivil, dataNascimento, end);
-        contas = new HashMap<>();
+        contas = new TreeMap<>();
         this.ag = ag;
     }
 
     //Construtor vazio: Lê do teclado
     public Cliente(Agencia ag) {
-        contas = new HashMap<>();
+        contas = new TreeMap<>();
     }
 
     public void LerDoTeclado(Agencia ag) {
-        this.ag = ag; //agencia onde o cliente esta cadastrada
+        this.ag = ag;
         super.LerDoTeclado();
+
         Scanner sc = new Scanner(System.in);
-        System.out.println("Digite senha: ");
-        senha = sc.nextLine();
+        do {
+            System.out.print("Digite uma senha: ");
+            senha = sc.nextLine();
+
+            if (senha.length() < 6) {
+                System.out.println("A senha deve ter ao menos 6 caracteres!");
+            }
+        } while (senha.length() < 6);
     }
 
-
-    //métodos
-
+    //Métodos
     public Conta EncontraConta(String nro) {
         return contas.get(nro);
     }
 
-    //Getters and Setters
+    public void MostrarInfos() {
+        System.out.println("=== Cliente ===");
+        System.out.println("Nome: " + getNome());
+        System.out.println("CPF: " + getCpf());
+
+        Calendar dataNasc = getDataNascimento();
+        //Data em formato de "String"
+        if (dataNasc != null) {
+            int dia = dataNasc.get(Calendar.DAY_OF_MONTH);
+            int mes = dataNasc.get(Calendar.MONTH) + 1;
+            int ano = dataNasc.get(Calendar.YEAR);
+            System.out.printf("Data de nascimento: %02d/%02d/%04d\n", dia, mes, ano);
+        }
+
+        System.out.println("Estado civil: " + getEstadoCivil());
+        System.out.println("Escolaridade: " + getEscolaridade());
+        System.out.println("Endereço: " + getEnd());
+
+        if (contas.isEmpty()) {
+            System.out.println("Nenhuma conta cadastrada.");
+            return;
+        }
+        System.out.println();
+
+        System.out.println("Contas Associadas: ");
+        for (Conta c : contas.values()) {
+            System.out.println("Número da Conta: " + c.getNroConta());
+            System.out.println("Saldo: R$ " + c.getSaldoAtual());
+            System.out.println("Ativa: " + c.isEstaAtiva());
+            System.out.println("Tipo: " + c.getTipoConta());
+
+
+            if (c instanceof ContaCorrente cc) {
+                System.out.println("Limite Cheque Especial: R$ " + cc.getLimChequeEspecial());
+                System.out.println("Taxa Administrativa: R$ " + cc.getValorTaxaAdm());
+            } else if (c instanceof ContaPoupanca cp) {
+                System.out.println("Rendimento Mensal: " + cp.getRendimentoMes() + "%");
+            } else if (c instanceof ContaSalario cs) {
+                System.out.println("Limite de Saque: R$ " + cs.getLimSaque());
+                System.out.println("Limite de Transferência: R$ " + cs.getLimTransferencia());
+            }
+            System.out.println();
+        }
+    }
 
     public void NovaConta(Conta c) {
         contas.put(c.getNroConta(), c);
@@ -57,7 +105,7 @@ public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
     public void Login(String usuario, String senha) {
         try {
             ValidaSenha(senha);
-            if(usuario.equals(this.getNome().toLowerCase())) {
+            if(usuario.equals(this.getCpf())) {
                 logado = true;
                 Menu();
             }
@@ -66,6 +114,9 @@ public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
         }
     }
 
+    public TreeMap<String, Conta> getContas() {
+        return contas;
+    }
 
     public void Menu(){
         if(!logado) {
@@ -84,6 +135,7 @@ public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
             escolha = sc.nextInt();
             switch (escolha) {
                 case 1: {
+                    sc.nextLine();
                     System.out.println("Digite numero da conta a ser acessada:");
                     String nro;
                     nro = sc.nextLine();
@@ -98,6 +150,7 @@ public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
                     continue;
                 }
                 case 2: {
+                    sc.nextLine();
                     System.out.println("Digite numero da conta a ser desbloqueada:");
                     String nro;
                     nro = sc.nextLine();
@@ -115,9 +168,15 @@ public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
                     continue;
                 }
                 case 3: {
-                    System.out.println("Digite a nova senha: ");
-                    senha = sc.nextLine();
-                    System.out.println("Senha modificada!");
+                    sc.nextLine();
+                    System.out.print("Digite a nova senha: ");
+                    String nova = sc.nextLine();
+                    if (nova.length() < 6) {
+                        System.out.println("Senha deve ter ao menos 6 caracteres!");
+                    } else {
+                        senha = nova;
+                        System.out.println("Senha modificada com sucesso!");
+                    }
                     continue;
                 }
                 case -1: {
@@ -131,5 +190,4 @@ public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
         }
         logado = false;
     }
-
 }

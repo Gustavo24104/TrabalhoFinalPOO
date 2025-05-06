@@ -49,7 +49,6 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
         this.ag = ag;
     }
 
-
     public void ValidaSenha(String senha) throws SenhaInvalidaException {
         if (!this.senha.equals(senha)) {
             tentativasErradas++;
@@ -106,54 +105,91 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
 
     public void Menu() {
         if (!logado) {
-            System.out.println("Usuario nao logado!");
+            System.out.println("Usuário não logado!");
             return;
         }
 
-        System.out.println("Bem vindo.");
-        MostraInfos();
-        int escolha = 0;
         Scanner sc = new Scanner(System.in);
+        int escolha = 0;
+
+        System.out.println("Bem-vindo!");
+        MostraInfos();
 
         while (escolha != -1) {
-            escolha = sc.nextInt();
             System.out.println("""
-                    Faça sua escolha:
-                    1 - Sacar dinheiro
-                    2 - Depositar dinheiro
-                    3 - Transferencia bancária
-                    4 - Trocar senha
-                    -1 Sair""");
+                \nFaça sua escolha:
+                1 - Sacar dinheiro
+                2 - Depositar dinheiro
+                3 - Transferência bancária
+                4 - Trocar senha
+                -1 - Sair
+                """);
+            System.out.print("Opção: ");
+
+            if (sc.hasNextInt()) {
+                escolha = sc.nextInt();
+                sc.nextLine();
+            } else {
+                System.out.println("Por favor, insira um número válido.");
+                sc.nextLine();
+                continue;
+            }
+
             switch (escolha) {
                 case 1: {
-                    //TODO!
-                    //Transacao(valor);
+                    System.out.print("Quanto quer sacar? (R$): ");
+                    double valor = sc.nextDouble();
+                    sc.nextLine();
+                    System.out.print("Digite sua senha: ");
+                    String senha = sc.nextLine();
+
+                    Transacao t = new Transacao(this, Calendar.getInstance());
+                    t.setTipo("saque");
+                    t.setValor(valor);
+                    t.RealizaMovimentacao(senha, null);
+                    break;
                 }
                 case 2: {
-                    //TODO!
-                    //Transacao(valor);
+                    System.out.print("Digite o valor do depósito: ");
+                    double valorDep = sc.nextDouble();
+                    sc.nextLine();
+
+                    Transacao tDep = new Transacao(this, Calendar.getInstance());
+                    tDep.setTipo("deposito");
+                    tDep.setValor(valorDep);
+                    tDep.RealizaMovimentacao(null, null);
+
+                    System.out.println("Depósito de R$" + valorDep + " realizado com sucesso!");
+                    break;
                 }
                 case 3: {
-                    //TODO!
-                    //Transacao();
+                    // TODO: Implementar transferência
+                    System.out.println("Funcionalidade ainda não implementada.");
+                    break;
                 }
                 case 4: {
-                    System.out.println("Digite nova senha: ");
-                    senha = sc.nextLine();
-                    System.out.println("Senha modificada!");
-                    continue;
+                    System.out.print("Digite nova senha: ");
+                    String nova = sc.nextLine();
+                    if (nova.length() < 6) {
+                        System.out.println("Senha deve ter ao menos 6 caracteres!");
+                    } else {
+                        setSenha(nova);
+                        System.out.println("Senha modificada com sucesso!");
+                    }
+                    break;
                 }
                 case -1: {
+                    System.out.println("Saindo da conta...");
                     break;
                 }
                 default: {
-                    System.out.println("Opção inválida!");
-                    continue;
+                    System.out.println("Opção inválida! Tente novamente.");
+                    break;
                 }
             }
-    }
+        }
         logado = false;
-}
+    }
 
     public void MostraInfos(){
         System.out.println("Numero da conta: " + nroConta);
@@ -163,67 +199,32 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
         + "/" + ultimaMovimentacao.get(Calendar.MONTH) + "/" +  ultimaMovimentacao.get(Calendar.YEAR));
     }
 
-
     //Getters and Setters
-    public boolean isEstaBloqueada() {
-        return estaBloqueada;
-    }
+    public boolean isEstaBloqueada() {return estaBloqueada;}
 
-    public String getNroConta() {
-        return nroConta;
-    }
-    public void setNroConta(String nroConta) {
-        this.nroConta = nroConta;
-    }
+    public String getNroConta() {return nroConta;}
+    public void setNroConta(String nroConta) {this.nroConta = nroConta;}
 
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-    public double getSaldoAtual() {
-        return saldoAtual;
-    }
+    public void setSenha(String senha) {this.senha = senha;}
+    public double getSaldoAtual() {return saldoAtual;}
 
-    public void setSaldoAtual(double saldoAtual) {
-        this.saldoAtual = saldoAtual;
-    }
-    public Calendar getDataAbertura() {
-        return dataAbertura;
-    }
+    public void setSaldoAtual(double saldoAtual) {this.saldoAtual = saldoAtual;}
+    public Calendar getDataAbertura() {return dataAbertura;}
 
-    public void setDataAbertura(Calendar dataAbertura) {
-        this.dataAbertura = dataAbertura;
-    }
-    public Calendar getUltimaMovimentacao() {
-        return ultimaMovimentacao;
-    }
+    public void setDataAbertura(Calendar dataAbertura) {this.dataAbertura = dataAbertura;}
+    public Calendar getUltimaMovimentacao() {return ultimaMovimentacao;}
 
-    public boolean isEstaAtiva() {
-        return estaAtiva;
-    }
-    public void setEstaAtiva(boolean estaAtiva) {
-        this.estaAtiva = estaAtiva;
-    }
+    public boolean isEstaAtiva() {return estaAtiva;}
+    public void setEstaAtiva(boolean estaAtiva) {this.estaAtiva = estaAtiva;}
 
-    public Cliente[] getDonoDaConta() {
-        return donoDaConta;
-    }
-    public void setDonoDaConta(Cliente[] donoDaConta) {
-        this.donoDaConta = donoDaConta;
-    }
+    public Cliente[] getDonoDaConta() {return donoDaConta;}
+    public void setDonoDaConta(Cliente[] donoDaConta) {this.donoDaConta = donoDaConta;}
 
-    public Agencia getAg() {
-        return ag;
-    }
-    public void setAg(Agencia ag) {
-        this.ag = ag;
-    }
+    public Agencia getAg() {return ag;}
+    public void setAg(Agencia ag) {this.ag = ag;}
 
-    public int getTentativasErradas() {
-        return tentativasErradas;
+    public int getTentativasErradas() {return tentativasErradas;}
+    public void setTentativasErradas(int tentativasErradas) {this.tentativasErradas = tentativasErradas;
     }
-
-    public void setTentativasErradas(int tentativasErradas) {
-        this.tentativasErradas = tentativasErradas;
-    }
-
+    public abstract String getTipoConta();
 }

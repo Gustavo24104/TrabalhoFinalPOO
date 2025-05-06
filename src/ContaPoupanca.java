@@ -26,4 +26,9 @@ public class ContaPoupanca extends Conta {
         System.out.println("Rendimento mensal: " + rendimentoMes);
     }
 
+    //Getters and Setters
+    public double getRendimentoMes() {return rendimentoMes;}
+    public void setRendimentoMes(double rendimentoMes) {this.rendimentoMes = rendimentoMes;}
+
+    public String getTipoConta() {return "Conta Poupança";}
 }
