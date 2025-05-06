@@ -231,13 +231,15 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
         System.out.println("Numero da conta: " + nroConta);
         System.out.println("Saldo atual: " + saldoAtual);
         System.out.println("Status " + (estaAtiva ? "ativa" : "inativa"));
+        System.out.println("É conjunta" + (donoDaConta[1] == null ? "Não" : "Sim\n" +  "Outro titular: " +
+                donoDaConta[1].getNome()));
         System.out.println("Ultima movimentacao em: " + ultimaMovimentacao.get(Calendar.DAY_OF_MONTH)
         + "/" + ultimaMovimentacao.get(Calendar.MONTH) + "/" +  ultimaMovimentacao.get(Calendar.YEAR));
     }
 
     //Getters and Setters
     public boolean isEstaBloqueada() {return estaBloqueada;}
-
+    public void setEstaBloqueada(boolean b) {estaBloqueada = b;}
     public String getNroConta() {return nroConta;}
     public void setNroConta(String nroConta) {this.nroConta = nroConta;}
 
@@ -260,7 +262,7 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
     public void setAg(Agencia ag) {this.ag = ag;}
 
     public int getTentativasErradas() {return tentativasErradas;}
-    public void setTentativasErradas(int tentativasErradas) {this.tentativasErradas = tentativasErradas;
-    }
+    public void setTentativasErradas(int tentativasErradas) {this.tentativasErradas = tentativasErradas;}
+
     public abstract String getTipoConta();
 }

@@ -66,7 +66,8 @@ public class Gerente extends Funcionario {
                     5 - Promover funcionário a gerente
                     6 - Acessar como funcionário (gerenciamento de contas)
                     7 - Ver dados de um funcionário
-                    8 - Ver funcionários da Agência
+                    8 - Ver próprios dados
+                    9 - Ver funcionários da Agência
                     -1 - Voltar""");
             escolha = sc.nextInt();
             sc.nextLine(); // limpar buffer
@@ -163,6 +164,9 @@ public class Gerente extends Funcionario {
                     continue;
                 }
                 case 8: {
+                    System.out.println(this);
+                }
+                case 9: {
                     TreeMap<String, Funcionario> mapa = getTrabalho().getFuncionariosMap(); // getter que retorna o TreeMap
                     if (mapa.isEmpty()) {
                         System.out.println("Nenhum funcionário cadastrado.");
@@ -191,7 +195,7 @@ public class Gerente extends Funcionario {
         return super.toString() + "\nTornou-se gerente em: " + dataDeIngressoComoGerente.get(Calendar.DAY_OF_MONTH) +
                 "/" + dataDeIngressoComoGerente.get(Calendar.MONTH) + "/" +
                 dataDeIngressoComoGerente.get(Calendar.YEAR) +
-                "\nPossui Curso? = " + (temCurso ? "Possui" : "Não Possui");
+                "\n" + (temCurso ? "Possui curso de gerente" : "Não Possui curso de gerente");
     }
 
     //Getters and Setters

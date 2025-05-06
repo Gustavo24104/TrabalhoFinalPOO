@@ -102,6 +102,7 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                     4 - Mostrar Informações de um Cliente
                     5 - Ver Clientes
                     6 - Trocar senha
+                    7 - Trocar senha de cliente
                     -1 - Voltar""");
             escolha = sc.nextInt();
             switch (escolha){
@@ -273,13 +274,34 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                 case 6: {
                     sc.nextLine();
                     System.out.println("Digite nova senha: ");
-                    senha = sc.nextLine();
-                    if(senha.length() < 6) {
+                    String nova = sc.nextLine();
+                    if(nova.length() < 6) {
                         System.out.println("Senha deve ter ao menos 6 caracteres!\n");
                         continue;
                     }
+                    senha = nova;
                     System.out.println("Senha modificada!");
                     continue;
+                }
+                case 7: {
+                    System.out.println("Digite cpf do cliente");
+                    String aux = sc.nextLine();
+                    Cliente c  = trabalho.EncontraCliente(aux);
+                    if(c == null) {
+                        System.out.println("Cliente nao encontrado!");
+                        continue;
+                    }
+
+                    System.out.println("Nova senha do cliente: ");
+                    aux = sc.nextLine();
+
+                    if(aux.length() < 6) {
+                        System.out.println("Senha deve ter 6 ou mais caracteres!");
+                        continue;
+                    }
+
+                    //TODO
+
                 }
                 case -1: {
                     break;
@@ -302,6 +324,8 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                     1 - Alterar limite de cheque especial
                     2 - Alterar limite de saque
                     3 - Deixar conta ativa/inativa
+                    4 - Desbloquear conta
+                    5 - Trocar senhas
                     -1 - Voltar""");
             escolha = sc.nextInt();
 
@@ -332,6 +356,17 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                     gerenciada.setEstaAtiva(!gerenciada.isEstaAtiva());
                     System.out.println("Conta agora está " + (gerenciada.isEstaAtiva() ? "Ativa." : "Inativa."));
                     break;
+                }
+                case 4: {
+                    gerenciada.setEstaBloqueada(false);
+                    System.out.println("Conta desbloqueada!");
+                    continue;
+                }
+                case 5: {
+                    System.out.println("Digite nova senha: ");
+                    String nova = sc.nextLine();
+                    gerenciada.setSenha(nova);
+                    System.out.println("Senha modificada!");
                 }
                 case -1:
                     return;

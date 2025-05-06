@@ -71,7 +71,6 @@ public class Agencia implements Serializable {
                     1 - Logar como funcionario
                     2 - Logar como gerente
                     3 - Logar como cliente
-                    4 - Ver informações do gerente
                     -1 - Voltar""");
             escolha = sc.nextInt();
             sc.nextLine(); //limpar buffer
@@ -80,6 +79,7 @@ public class Agencia implements Serializable {
                     System.out.println("Digite cpf funcionário");
                     String cpf = sc.nextLine();
                     l = funcs.get(cpf);
+                    if(cpf.equalsIgnoreCase(gerente.getCpf())) l = gerente; // caso de beirada
                     user = cpf;
                     if(l == null) {
                         System.out.println("Funcionario de cpf " + cpf + " não encontrado!");
@@ -114,11 +114,11 @@ public class Agencia implements Serializable {
                     break;
                 }
 
-                if(escolha == 4) {
-
-                    System.out.println(gerente);
-                    continue;
-                }
+//                if(escolha == 4) {
+//
+//                    System.out.println(gerente);
+//                    continue;
+//                }
 
                 if(escolha == -1) {
                     return;
