@@ -13,7 +13,6 @@ public class Agencia implements Serializable {
         this.nomeFicticio = nomeFicticio;
         this.nroAgencia = nroAgencia;
         this.end = end;
-        //this.gerente = gerente;
         this.funcs = new TreeMap<>();
         clientes = new TreeMap<>();
     }
@@ -36,8 +35,6 @@ public class Agencia implements Serializable {
         return funcs.get(key);
     }
 
-
-
     public void DemiteFuncionario(String chave){
         Funcionario result = funcs.remove(chave);
         if(result == null) {
@@ -47,7 +44,6 @@ public class Agencia implements Serializable {
         System.out.println("Funcionário " + result.getNome() + " removido com sucesso!");
     }
 
-
     public void CadastraCliente(Cliente c) {
         clientes.put(c.getCpf(), c);
     }
@@ -56,7 +52,12 @@ public class Agencia implements Serializable {
         return clientes.get(cpf);
     }
 
-
+    public TreeMap<String, Funcionario> getFuncionariosMap() {
+        return funcs;
+    }
+    public Map<String, Cliente> getClientes() {
+        return clientes;
+    }
 
     public void Menu() {
         Scanner sc = new Scanner(System.in);
@@ -74,7 +75,7 @@ public class Agencia implements Serializable {
                     -1 - Voltar""");
             escolha = sc.nextInt();
             sc.nextLine(); //limpar buffer
-            //switch (escolha) {
+
                 if(escolha == 1) {
                     System.out.println("Digite cpf funcionário");
                     String cpf = sc.nextLine();
@@ -87,11 +88,19 @@ public class Agencia implements Serializable {
                     break;
                 }
 
-                if(escolha == 2) {
-                    l = gerente; // como toda agencia so tem um gerente basta usá-lo
-                    user = gerente.getCpf(); // usuario do gerente eh o cpf
+            if (escolha == 2) {
+                System.out.println("Digite CPF do gerente:");
+                String cpf = sc.nextLine();
+                // Verifica se o CPF digitado confere com o CPF do gerente cadastrado
+                if (cpf.equals(gerente.getCpf())) {
+                    l = gerente;
+                    user = cpf;   // o usuário do gerente é o seu CPF
                     break;
+                } else {
+                    System.out.println("CPF informado não é a do gerente desta agência.");
+                    continue;
                 }
+            }
 
                 if(escolha == 3) {
                     System.out.println("Digite cpf do cliente:");
@@ -106,6 +115,7 @@ public class Agencia implements Serializable {
                 }
 
                 if(escolha == 4) {
+
                     System.out.println(gerente);
                     continue;
                 }
@@ -117,16 +127,13 @@ public class Agencia implements Serializable {
                     System.out.println("Escolha invalida!");
                     continue;
                 }
-            //}
+
         }
         System.out.println("Digite senha: ");
         String senha = sc.nextLine();
         l.Login(user, senha);
         Menu();
     }
-
-
-
 
     //Gera um número para uma conta, baseando-se no CPF do cliente, no nro da agencia e um numero aleatorio
     public String GerarNumeroDeConta(Cliente dono) {
@@ -152,34 +159,15 @@ public class Agencia implements Serializable {
 
 
 //Getters and Setters
-    public String getNomeFicticio() {
-        return nomeFicticio;
-    }
-    public void setNomeFicticio(String nomeFicticio) {
-        this.nomeFicticio = nomeFicticio;
-    }
+    public String getNomeFicticio() {return nomeFicticio;}
+    public void setNomeFicticio(String nomeFicticio) {this.nomeFicticio = nomeFicticio;}
 
-    public String getNroAgencia() {
-        return nroAgencia;
-    }
-    public void setNroAgencia(String nroAgencia) {
-        this.nroAgencia = nroAgencia;
-    }
+    public String getNroAgencia() {return nroAgencia;}
+    public void setNroAgencia(String nroAgencia) {this.nroAgencia = nroAgencia;}
 
-    public Endereco getEnd() {
-        return end;
-    }
-    public void setEnd(Endereco end) {
-        this.end = end;
-    }
+    public Endereco getEnd() {return end;}
+    public void setEnd(Endereco end) {this.end = end;}
 
-    public Gerente getGerente() {
-        return gerente;
-    }
-    public void setGerente(Gerente gerente) {
-        this.gerente = gerente;
-    }
-
-
-
+    public Gerente getGerente() {return gerente;}
+    public void setGerente(Gerente gerente) {this.gerente = gerente;}
 }

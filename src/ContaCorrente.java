@@ -36,4 +36,15 @@ public class ContaCorrente extends Conta{
         System.out.println("Taxa administrativa: " + valorTaxaAdm);
     }
 
+    //Getters and Setters
+    public double getLimChequeEspecial() {return limChequeEspecial;}
+    public void setLimChequeEspecial(double limChequeEspecial) {this.limChequeEspecial = limChequeEspecial;
+    }
+    public double getValorTaxaAdm() {return valorTaxaAdm;}
+    public void setValorTaxaAdm(double valorTaxaAdm) {this.valorTaxaAdm = valorTaxaAdm;}
+
+    public String getTipoConta() {
+        return "Conta Corrente";
+    }
 }
+

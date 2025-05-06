@@ -1,5 +1,4 @@
-import java.util.Calendar;
-import java.util.Scanner;
+import java.util.*;
 
 public class Gerente extends Funcionario {
     private static double comissao;
@@ -18,15 +17,11 @@ public class Gerente extends Funcionario {
     }
 
     //Construtor vazio
-    public Gerente() {
-
-    }
+    public Gerente() {}
 
     public Gerente(Funcionario f) {
         super(f);
     }
-
-
 
     public void LerDoTeclado(boolean mudarData) {
         //super.LerDoTeclado(ag);
@@ -38,11 +33,10 @@ public class Gerente extends Funcionario {
         else dataDeIngressoComoGerente = Calendar.getInstance();
         while (true) {
             System.out.println("O gerente tem curso? (true/false)");
-            String aux = sc.nextLine(); //sc.nextBoolean nao funciona, não sei porquê.
+            String aux = sc.nextLine();
             if (aux.equalsIgnoreCase("false")) temCurso = false;
             else if (aux.equalsIgnoreCase("true")) temCurso = true;
             else {
-                //System.out.println("Valor inválido!");
                 continue;
             }
             break;
@@ -53,7 +47,6 @@ public class Gerente extends Funcionario {
         super.CalcularSalario(sal);
         setSalario(getSalario() + comissao);
     }
-
 
     public void Menu() {
         if(!isLogado()) {
@@ -73,6 +66,7 @@ public class Gerente extends Funcionario {
                     5 - Promover funcionário a gerente
                     6 - Acessar como funcionário (gerenciamento de contas)
                     7 - Ver dados de um funcionário
+                    8 - Ver funcionários da Agência
                     -1 - Voltar""");
             escolha = sc.nextInt();
             sc.nextLine(); // limpar buffer
@@ -86,8 +80,19 @@ public class Gerente extends Funcionario {
                 case 2: {
                     System.out.println("Digite cpf do funcionário a ser demitido: ");
                     String key = sc.nextLine();
-                    //Talvez colocar uma confirmação aqui
-                    getTrabalho().DemiteFuncionario(key);
+                    Funcionario funcionario = getTrabalho().EncontraFuncionario(key);
+                    if (funcionario == null) {
+                        System.out.println("Funcionário não encontrado!");
+                        continue;
+                    } System.out.println("Funcionário encontrado: " + funcionario.getNome());
+                    System.out.println("Tem certeza que deseja demitir este funcionário? (true/false)");
+                    String confirmacao = sc.nextLine();
+                    if (confirmacao.equalsIgnoreCase("true")) {
+                        getTrabalho().DemiteFuncionario(key);
+                        System.out.println("Funcionário demitido com sucesso!");
+                    } else {
+                        System.out.println("Operação cancelada.");
+                    }
                     continue;
                 }
                 case 3: {
@@ -157,6 +162,19 @@ public class Gerente extends Funcionario {
                     System.out.println(escolhido);
                     continue;
                 }
+                case 8: {
+                    TreeMap<String, Funcionario> mapa = getTrabalho().getFuncionariosMap(); // getter que retorna o TreeMap
+                    if (mapa.isEmpty()) {
+                        System.out.println("Nenhum funcionário cadastrado.");
+                    } else {
+                        System.out.printf("%-20s | %-10s | %-15s\n", "Nome", "Cargo", "CPF");
+                        for (Funcionario f : mapa.values()) {
+                            System.out.printf("%-20s | %-10s | %-15s\n", f.getNome(), f.getCargo(), f.getCpf());
+                        }
+                        System.out.println();
+                    }
+                    continue;
+                }
                 case -1: {
                     break;
                 }
@@ -169,20 +187,18 @@ public class Gerente extends Funcionario {
         setLogado(false);
     }
 
-    //Getters and Setters
-    public static double getComissao() {
-        return comissao;
-    }
-
-    public static void setComissao(double comissao) {
-        Gerente.comissao = comissao;
-    }
-
     public String toString() {
         return super.toString() + "\nTornou-se gerente em: " + dataDeIngressoComoGerente.get(Calendar.DAY_OF_MONTH) +
                 "/" + dataDeIngressoComoGerente.get(Calendar.MONTH) + "/" +
                 dataDeIngressoComoGerente.get(Calendar.YEAR) +
-                "\ntemCurso=" + temCurso;
+                "\nPossui Curso? = " + (temCurso ? "Possui" : "Não Possui");
     }
 
+    //Getters and Setters
+    public static double getComissao() {
+        return comissao;
+    }
+    public static void setComissao(double comissao) {
+        Gerente.comissao = comissao;
+    }
 }

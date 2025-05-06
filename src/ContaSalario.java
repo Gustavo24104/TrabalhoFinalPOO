@@ -27,8 +27,18 @@ public class ContaSalario extends Conta {
     public void MostraInfos() {
         super.MostraInfos();
         System.out.println("Tipo: Conta salário");
-        System.out.println("Limite de saque" + limSaque);
-        System.out.println("Limite de transferencia" + limTransferencia);
+        System.out.println("Limite de saque: " + limSaque);
+        System.out.println("Limite de transferencia: " + limTransferencia);
     }
 
+    //Getters and Setters
+    public double getLimSaque() {return limSaque;}
+    public void setLimSaque(double limSaque) {this.limSaque = limSaque;}
+
+    public double getLimTransferencia() {return limTransferencia;}
+    public void setLimTransferencia(double limTransferencia) {this.limTransferencia = limTransferencia;}
+
+    public String getTipoConta() {return "Conta Salario";}
 }
+
+
