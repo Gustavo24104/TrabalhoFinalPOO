@@ -151,6 +151,7 @@ public class Gerente extends Funcionario {
                 }
                 case 6: {
                     super.Menu();
+                    continue;
                 }
                 case 7: {
                     System.out.println("Digite cpf do funcionário: ");
@@ -165,6 +166,7 @@ public class Gerente extends Funcionario {
                 }
                 case 8: {
                     System.out.println(this);
+                    continue;
                 }
                 case 9: {
                     TreeMap<String, Funcionario> mapa = getTrabalho().getFuncionariosMap(); // getter que retorna o TreeMap

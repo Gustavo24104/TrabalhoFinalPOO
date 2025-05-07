@@ -5,13 +5,10 @@ public class Banco {
     static TreeMap<String, Agencia> agencias; //mapear agencia e numero
 
 
-    //TODO: Terminar menus (funcionário, gerente, conta e de agencias (tudo o que falta está marcado)
-    //TODO: Tratar os problemas de buffer
-    //TODO: Testar tudo direitinho (mas acredito que esteja funcionando)
-    //TODO: Polir mais o código (organizar métodos e remover get/set/construtores que não estão sendo utilizados)
 
     public static void main(String[] args) {
         agencias = new TreeMap<>();
+        Gerente.setComissao(1299.99); //Comissao dos gerentes
         CarregarDados();
         Menu();
     }

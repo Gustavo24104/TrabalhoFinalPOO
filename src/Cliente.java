@@ -46,6 +46,8 @@ public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
         return contas.get(nro);
     }
 
+
+
     public void MostrarInfos() {
         System.out.println("=== Cliente ===");
         System.out.println("Nome: " + getNome());
@@ -77,16 +79,17 @@ public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
             System.out.println("Ativa: " + c.isEstaAtiva());
             System.out.println("Tipo: " + c.getTipoConta());
 
+            c.MostraInfos();
 
-            if (c instanceof ContaCorrente cc) {
-                System.out.println("Limite Cheque Especial: R$ " + cc.getLimChequeEspecial());
-                System.out.println("Taxa Administrativa: R$ " + cc.getValorTaxaAdm());
-            } else if (c instanceof ContaPoupanca cp) {
-                System.out.println("Rendimento Mensal: " + cp.getRendimentoMes() + "%");
-            } else if (c instanceof ContaSalario cs) {
-                System.out.println("Limite de Saque: R$ " + cs.getLimSaque());
-                System.out.println("Limite de Transferência: R$ " + cs.getLimTransferencia());
-            }
+//            if (c instanceof ContaCorrente cc) {
+//                System.out.println("Limite Cheque Especial: R$ " + cc.getLimChequeEspecial());
+//                System.out.println("Taxa Administrativa: R$ " + cc.getValorTaxaAdm());
+//            } else if (c instanceof ContaPoupanca cp) {
+//                System.out.println("Rendimento Mensal: " + cp.getRendimentoMes() + "%");
+//            } else if (c instanceof ContaSalario cs) {
+//                System.out.println("Limite de Saque: R$ " + cs.getLimSaque());
+//                System.out.println("Limite de Transferência: R$ " + cs.getLimTransferencia());
+//            }
             System.out.println();
         }
     }
@@ -113,9 +116,6 @@ public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
         }
     }
 
-    public TreeMap<String, Conta> getContas() {
-        return contas;
-    }
 
     public void Menu(){
         if(!logado) {
@@ -189,4 +189,37 @@ public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
         }
         logado = false;
     }
+
+    //Getters e setters
+
+
+    public boolean isLogado() {
+        return logado;
+    }
+
+    public void setLogado(boolean logado) {
+        this.logado = logado;
+    }
+
+
+    public Agencia getAg() {
+        return ag;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public void setAg(Agencia ag) {
+        this.ag = ag;
+    }
+
+    public void setContas(TreeMap<String, Conta> contas) {
+        this.contas = contas;
+    }
+
+    public TreeMap<String, Conta> getContas() {
+        return contas;
+    }
+
 }

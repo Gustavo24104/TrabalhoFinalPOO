@@ -52,11 +52,22 @@ public class Agencia implements Serializable {
         return clientes.get(cpf);
     }
 
-    public TreeMap<String, Funcionario> getFuncionariosMap() {
-        return funcs;
-    }
-    public Map<String, Cliente> getClientes() {
-        return clientes;
+
+
+    //Gera um número para uma conta, baseando-se no CPF do cliente, no nro da agencia e um numero aleatorio
+    public String GerarNumeroDeConta(Cliente dono) {
+        Random r = new Random();
+        String result = "";
+        int j = 0; //usado para indexar o cpf (ignorar '.' e '-')
+        //String x1, x2, x3, x4, x5, x6;
+        for(int i = 0; i < 6; ++i) {
+            if(dono.getCpf().charAt(j) == '.' || dono.getCpf().charAt(j) == '-') j++; //ignorar '.' e '-'
+            int aux = Integer.parseInt(String.valueOf(nroAgencia.charAt(i))) +
+                    Integer.parseInt(String.valueOf(dono.getCpf().charAt(j++))) * r.nextInt(1, 100);
+            aux = (aux % 9)+1;
+            result = result.concat(String.valueOf(aux));
+        }
+        return result;
     }
 
     public void Menu() {
@@ -114,11 +125,6 @@ public class Agencia implements Serializable {
                     break;
                 }
 
-//                if(escolha == 4) {
-//
-//                    System.out.println(gerente);
-//                    continue;
-//                }
 
                 if(escolha == -1) {
                     return;
@@ -135,21 +141,7 @@ public class Agencia implements Serializable {
         Menu();
     }
 
-    //Gera um número para uma conta, baseando-se no CPF do cliente, no nro da agencia e um numero aleatorio
-    public String GerarNumeroDeConta(Cliente dono) {
-        Random r = new Random();
-        String result = "";
-        int j = 0; //usado para indexar o cpf (ignorar '.' e '-')
-        //String x1, x2, x3, x4, x5, x6;
-        for(int i = 0; i < 6; ++i) {
-            if(dono.getCpf().charAt(j) == '.' || dono.getCpf().charAt(j) == '-') j++; //ignorar '.' e '-'
-            int aux = Integer.parseInt(String.valueOf(nroAgencia.charAt(i))) +
-                    Integer.parseInt(String.valueOf(dono.getCpf().charAt(j++))) * r.nextInt(1, 100);
-            aux = (aux % 9)+1;
-            result = result.concat(String.valueOf(aux));
-        }
-        return result;
-    }
+
 
     public String toString() {
         return "Nome: " + nomeFicticio + ". Número: " + nroAgencia +
@@ -158,7 +150,7 @@ public class Agencia implements Serializable {
     }
 
 
-//Getters and Setters
+    //Getters and Setters
     public String getNomeFicticio() {return nomeFicticio;}
     public void setNomeFicticio(String nomeFicticio) {this.nomeFicticio = nomeFicticio;}
 
@@ -170,4 +162,11 @@ public class Agencia implements Serializable {
 
     public Gerente getGerente() {return gerente;}
     public void setGerente(Gerente gerente) {this.gerente = gerente;}
+
+    public TreeMap<String, Funcionario> getFuncionariosMap() {
+        return funcs;
+    }
+    public Map<String, Cliente> getClientes() {
+        return clientes;
+    }
 }

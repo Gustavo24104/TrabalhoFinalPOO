@@ -84,6 +84,50 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
         }
     }
 
+
+    public void Login(String usuario, String senha) {
+        try {
+            ValidaSenha(senha);
+            if(usuario.equals(this.getCpf().toLowerCase())) {
+                logado = true;
+                Menu();
+            }
+        } catch (Exception e) {
+            System.out.println("Senha errada!");
+        }
+    }
+
+    @Override
+    public String toString() {
+         return super.toString() +
+                "\nSexo: " + sexo +
+                "\nCarteira de Trabalho: " + carteiraTrabalho +
+                "\nRG: " + RG +
+                "\nCargo: " + cargo +
+                "\nSalario: " + String.format("%.4f", salario)+
+                "\nFuncionário desde: " + anoDeIngresso.get(Calendar.DAY_OF_MONTH) + "/"
+                 + anoDeIngresso.get(Calendar.MONTH) + "/" + anoDeIngresso.get(Calendar.YEAR);
+    }
+
+    //4,734e+11 <- 15 anos em milisegundos
+    public void CalcularSalario(double sal) {
+        Calendar agora = Calendar.getInstance();
+        agora.add(Calendar.YEAR, -15);
+        if(anoDeIngresso.before(agora)) {
+            //funcionario a mais de 15 anos
+            salario = sal + (1.10*sal);
+            return;
+        }
+        salario = sal;
+    }
+
+    public void ValidaSenha(String senha) throws SenhaInvalidaException {
+        if(!this.senha.equals(senha)) {
+            throw new SenhaInvalidaException("Senha invalida!\n");
+        }
+    }
+
+
     public void Menu() {
         if(!logado) {
             System.out.println("Usuário nao logado!");
@@ -124,21 +168,21 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                     }
 
                     int tipoConta;
-                        //System.out.print("Opção: ");
-                        while (true) {
-                            System.out.println("Selecione tipo de conta:" +
-                                    "\n1 - Corrente" +
-                                    "\n2 - Poupança" +
-                                    "\n3 - Salário");
-                            tipoConta = sc.nextInt();
-                            sc.nextLine();
-                            if(tipoConta > 3 || tipoConta < 1) {
-                                System.out.println("Tipo inválido!");
-                                continue;
-                            }
-                            break;
+                    //System.out.print("Opção: ");
+                    while (true) {
+                        System.out.println("Selecione tipo de conta:" +
+                                "\n1 - Corrente" +
+                                "\n2 - Poupança" +
+                                "\n3 - Salário");
+                        tipoConta = sc.nextInt();
+                        sc.nextLine();
+                        if(tipoConta > 3 || tipoConta < 1) {
+                            System.out.println("Tipo inválido!");
+                            continue;
                         }
-                        //sc.nextLine();
+                        break;
+                    }
+                    //sc.nextLine();
 
                     System.out.print("Digite senha da conta: ");
                     String senhaConta = sc.nextLine();
@@ -284,6 +328,7 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                     continue;
                 }
                 case 7: {
+                    sc.nextLine();
                     System.out.println("Digite cpf do cliente");
                     String aux = sc.nextLine();
                     Cliente c  = trabalho.EncontraCliente(aux);
@@ -300,8 +345,8 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                         continue;
                     }
 
-                    //TODO
-
+                    c.setSenha(aux);
+                    System.out.println("Senha alterada!");
                 }
                 case -1: {
                     break;
@@ -376,48 +421,6 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
         }
     }
 
-    public void Login(String usuario, String senha) {
-        try {
-            ValidaSenha(senha);
-            if(usuario.equals(this.getCpf().toLowerCase())) {
-                logado = true;
-                Menu();
-            }
-        } catch (Exception e) {
-            System.out.println("Senha errada!");
-        }
-    }
-
-    @Override
-    public String toString() {
-         return super.toString() +
-                "\nSexo: " + sexo +
-                "\nCarteira de Trabalho: " + carteiraTrabalho +
-                "\nRG: " + RG +
-                "\nCargo: " + cargo +
-                "\nSalario: " + String.format("%.4f", salario)+
-                "\nFuncionário desde: " + anoDeIngresso.get(Calendar.DAY_OF_MONTH) + "/"
-                 + anoDeIngresso.get(Calendar.MONTH) + "/" + anoDeIngresso.get(Calendar.YEAR);
-    }
-
-    //4,734e+11 <- 15 anos em milisegundos
-    public void CalcularSalario(double sal) {
-        Calendar agora = Calendar.getInstance();
-        agora.add(Calendar.YEAR, -15);
-        if(anoDeIngresso.before(agora)) {
-            //funcionario a mais de 15 anos
-            salario = sal + (1.10*sal);
-            return;
-        }
-        salario = sal;
-    }
-
-    public void ValidaSenha(String senha) throws SenhaInvalidaException {
-        if(!this.senha.equals(senha)) {
-            throw new SenhaInvalidaException("Senha invalida!\n");
-        }
-    }
-
     //Getters and Setters
     public Calendar getAnoDeIngresso() {return anoDeIngresso;}
     public void setAnoDeIngresso(Calendar anoDeIngresso) {this.anoDeIngresso = anoDeIngresso;}
@@ -442,4 +445,8 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
 
     public Agencia getTrabalho() {return trabalho;}
     public void setTrabalho(Agencia trabalho) {this.trabalho = trabalho;}
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 }

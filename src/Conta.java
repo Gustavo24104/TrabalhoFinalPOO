@@ -49,6 +49,10 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
         this.ag = ag;
     }
 
+    public abstract String getTipoConta();
+    public abstract void Saque(double valor);
+
+
     public void ValidaSenha(String senha) throws SenhaInvalidaException {
         if (!this.senha.equals(senha)) {
             tentativasErradas++;
@@ -73,7 +77,6 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
         ultimaMovimentacao = data;
     }
 
-    public abstract void Saque(double valor);
 
     public void Login(String usuario, String senha) {
         if(estaBloqueada) {
@@ -236,33 +239,31 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
         System.out.println("Ultima movimentacao em: " + ultimaMovimentacao.get(Calendar.DAY_OF_MONTH)
         + "/" + ultimaMovimentacao.get(Calendar.MONTH) + "/" +  ultimaMovimentacao.get(Calendar.YEAR));
     }
-
     //Getters and Setters
     public boolean isEstaBloqueada() {return estaBloqueada;}
     public void setEstaBloqueada(boolean b) {estaBloqueada = b;}
     public String getNroConta() {return nroConta;}
+
     public void setNroConta(String nroConta) {this.nroConta = nroConta;}
-
     public void setSenha(String senha) {this.senha = senha;}
+
     public double getSaldoAtual() {return saldoAtual;}
-
     public void setSaldoAtual(double saldoAtual) {this.saldoAtual = saldoAtual;}
+
     public Calendar getDataAbertura() {return dataAbertura;}
-
     public void setDataAbertura(Calendar dataAbertura) {this.dataAbertura = dataAbertura;}
+
     public Calendar getUltimaMovimentacao() {return ultimaMovimentacao;}
-
     public boolean isEstaAtiva() {return estaAtiva;}
+
     public void setEstaAtiva(boolean estaAtiva) {this.estaAtiva = estaAtiva;}
-
     public Cliente[] getDonoDaConta() {return donoDaConta;}
+
     public void setDonoDaConta(Cliente[] donoDaConta) {this.donoDaConta = donoDaConta;}
-
     public Agencia getAg() {return ag;}
+
     public void setAg(Agencia ag) {this.ag = ag;}
-
     public int getTentativasErradas() {return tentativasErradas;}
-    public void setTentativasErradas(int tentativasErradas) {this.tentativasErradas = tentativasErradas;}
 
-    public abstract String getTipoConta();
+    public void setTentativasErradas(int tentativasErradas) {this.tentativasErradas = tentativasErradas;}
 }
