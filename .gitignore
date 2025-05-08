@@ -27,5 +27,3 @@ bin/
 
 ### Mac OS ###
 .DS_Store
-
-*.sav #ignorar arquivos de persistência

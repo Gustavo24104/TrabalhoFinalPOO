@@ -231,6 +231,7 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
     }
 
     public void MostraInfos(){
+
         System.out.println("Numero da conta: " + nroConta);
         System.out.println("Saldo atual: " + saldoAtual);
         System.out.println("Status " + (estaAtiva ? "ativa" : "inativa"));
@@ -258,12 +259,13 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
 
     public void setEstaAtiva(boolean estaAtiva) {this.estaAtiva = estaAtiva;}
     public Cliente[] getDonoDaConta() {return donoDaConta;}
-
     public void setDonoDaConta(Cliente[] donoDaConta) {this.donoDaConta = donoDaConta;}
+
     public Agencia getAg() {return ag;}
 
     public void setAg(Agencia ag) {this.ag = ag;}
     public int getTentativasErradas() {return tentativasErradas;}
 
     public void setTentativasErradas(int tentativasErradas) {this.tentativasErradas = tentativasErradas;}
+
 }

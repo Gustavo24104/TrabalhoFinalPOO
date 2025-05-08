@@ -244,6 +244,10 @@ public class Funcionario extends Pessoa implements Logavel, Serializable {
                                 continue;
                             }
                             outro.NovaConta(novaConta);
+                            Cliente[] cs = new Cliente[2];
+                            cs[0] = clienteEncontrado;
+                            cs[1] = outro;
+                            novaConta.setDonoDaConta(cs);
                             break;
                         }
                         else {
