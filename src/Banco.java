@@ -70,8 +70,9 @@ public class Banco {
                 case 1: {
                     if (agencias.isEmpty()) System.out.println("Lista de agencias vazia!");
                     for (Agencia ag : agencias.values()) {
-                        System.out.println(ag);
+                        System.out.println(ag + "\n");
                     }
+
                     continue;
                 }
 

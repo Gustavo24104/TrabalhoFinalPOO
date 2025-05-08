@@ -36,6 +36,7 @@ public class Transacao {
             try {
                 conta.ValidaSenha(senha);
                 conta.Saque(valor);
+                System.out.println("Saque de " + valor + " realizado com sucesso!");
             }
             catch (ValorInvalidoException e) {
                 System.out.println("Valor de transação inválido!");
@@ -50,6 +51,7 @@ public class Transacao {
         if(tipo.equals("deposito")) {
             try {
                 conta.Deposito(valor);
+                System.out.println("Depósito de R$" + valor + " realizado com sucesso!");
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
@@ -69,8 +71,9 @@ public class Transacao {
             try {
                 conta.Saque(valor);
                 recebedor.Deposito(valor);
+                System.out.println("Transferencia feita com sucesso!");
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println(e.getMessage());
             }
             recebedor.setUltimaMovimentacao(Calendar.getInstance());
         }

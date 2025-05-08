@@ -151,7 +151,8 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
                     t.setTipo("saque");
                     t.setValor(valor);
                     t.RealizaMovimentacao(senha, null);
-                    break;
+
+                    continue;
                 }
                 case 2: {
                     System.out.print("Digite o valor do depósito: ");
@@ -163,8 +164,7 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
                     tDep.setValor(valorDep);
                     tDep.RealizaMovimentacao(null, null);
 
-                    System.out.println("Depósito de R$" + valorDep + " realizado com sucesso!");
-                    break;
+                    continue;
                 }
                 case 3: {
                     // TODO: Implementar transferência
@@ -200,8 +200,7 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
                     t.setTipo("transferencia");
                     t.setValor(val);
                     t.RealizaMovimentacao(null, cn);
-                    System.out.println("Transferencia feita com sucesso!");
-                    break;
+                    continue;
                 }
                 case 4: {
                     System.out.print("Digite nova senha: ");
@@ -212,10 +211,11 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
                         setSenha(nova);
                         System.out.println("Senha modificada com sucesso!");
                     }
-                    break;
+                    continue;
                 }
                 case 5: {
                     MostraInfos();
+                    continue;
                 }
                 case -1: {
                     System.out.println("Saindo da conta...");
@@ -223,7 +223,7 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
                 }
                 default: {
                     System.out.println("Opção inválida! Tente novamente.");
-                    break;
+                    continue;
                 }
             }
         }
@@ -234,7 +234,7 @@ public abstract class Conta implements Logavel, Serializable { //Essa eh a outra
         System.out.println("Numero da conta: " + nroConta);
         System.out.println("Saldo atual: " + saldoAtual);
         System.out.println("Status " + (estaAtiva ? "ativa" : "inativa"));
-        System.out.println("É conjunta" + (donoDaConta[1] == null ? "Não" : "Sim\n" +  "Outro titular: " +
+        System.out.println("É conjunta? " + (donoDaConta[1] == null ? "Não" : "Sim\n" +  "Outro titular: " +
                 donoDaConta[1].getNome()));
         System.out.println("Ultima movimentacao em: " + ultimaMovimentacao.get(Calendar.DAY_OF_MONTH)
         + "/" + ultimaMovimentacao.get(Calendar.MONTH) + "/" +  ultimaMovimentacao.get(Calendar.YEAR));

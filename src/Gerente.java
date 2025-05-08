@@ -21,6 +21,7 @@ public class Gerente extends Funcionario {
 
     public Gerente(Funcionario f) {
         super(f);
+        setCargo("gerente");
     }
 
     public void LerDoTeclado(boolean mudarData) {

@@ -122,6 +122,7 @@ public class Cliente extends Pessoa implements Logavel, PodeSerLidoDoTeclado {
             System.out.println("Usuário nao logado!");
             return;
         }
+        System.out.println("Seja bem vindo, " + getNome() + "!");
         Scanner sc = new Scanner(System.in);
         int escolha = 0;
         while(escolha != -1) {
